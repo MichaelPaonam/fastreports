@@ -75,5 +75,6 @@ dmypy.json
 *.tmp
 *.bak
 *.swp
+hackathon.md
 
 # Made with Bob
