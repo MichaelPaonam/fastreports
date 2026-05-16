@@ -1,0 +1,124 @@
+{
+  "dataset_info": {
+    "total_transactions": 100,
+    "date_range": {
+      "start": "1970-01-01 00:00:00.000002154",
+      "end": "1970-01-01 00:00:00.000002253"
+    },
+    "detected_columns": {
+      "customer": "User ID",
+      "amount": "Total Amount",
+      "date": "Order Number",
+      "product": null
+    }
+  },
+  "revenue_analysis": {
+    "total_revenue": 8357.699999999999,
+    "average_transaction": 83.57699999999998,
+    "median_transaction": 74.85,
+    "std_transaction": 46.55840169815614,
+    "min_transaction": 5.0,
+    "max_transaction": 205.85,
+    "total_transactions": 100,
+    "revenue_distribution": {
+      "q25": 50.2375,
+      "q50": 74.85,
+      "q75": 115.0625,
+      "q90": 152.94500000000002,
+      "q95": 164.305
+    },
+    "revenue_concentration": {
+      "top_20_percent_transactions": 20,
+      "top_20_percent_revenue": 3154.65,
+      "top_20_percent_share": 37.75
+    }
+  },
+  "customer_behavior": {
+    "total_customers": 100,
+    "avg_transactions_per_customer": 1.0,
+    "median_transactions_per_customer": 1.0,
+    "customer_distribution": {
+      "one_time_buyers": 100,
+      "repeat_customers": 0,
+      "loyal_customers": 0,
+      "vip_customers": 0
+    },
+    "revenue_per_customer": {
+      "average": 83.57699999999998,
+      "median": 74.85,
+      "top_10_percent": 152.94500000000002
+    },
+    "customer_segments": {
+      "high_value": 25,
+      "high_spender_low_frequency": 0,
+      "low_spender_high_frequency": 75,
+      "low_value": 0
+    }
+  },
+  "customer_lifetime_value": {
+    "average_clv": 83.57699999999998,
+    "median_clv": 74.85,
+    "top_10_percent_clv": 152.94500000000002,
+    "clv_distribution": {
+      "q25": 50.2375,
+      "q50": 74.85,
+      "q75": 115.0625,
+      "q90": 152.94500000000002
+    },
+    "average_customer_lifespan_days": 0.0,
+    "average_purchase_frequency_per_month": 1.0
+  },
+  "churn_risk": {
+    "total_customers": 100,
+    "active_customers": 100,
+    "at_risk_customers": 0,
+    "churn_risk_percentage": 0.0,
+    "average_days_inactive": 0.0,
+    "median_days_inactive": 0.0,
+    "inactive_threshold_days": 90
+  },
+  "purchase_patterns": {
+    "daily_patterns": {
+      "transactions_by_day": {
+        "Monday": 0,
+        "Tuesday": 0,
+        "Wednesday": 0,
+        "Thursday": 100,
+        "Friday": 0,
+        "Saturday": 0,
+        "Sunday": 0
+      },
+      "busiest_day": "Thursday",
+      "slowest_day": "Monday",
+      "revenue_by_day": {
+        "Monday": 0.0,
+        "Tuesday": 0.0,
+        "Wednesday": 0.0,
+        "Thursday": 8357.7,
+        "Friday": 0.0,
+        "Saturday": 0.0,
+        "Sunday": 0.0
+      }
+    },
+    "hourly_patterns": {
+      "transactions_by_hour": {
+        "0": 100
+      },
+      "peak_hour": 0,
+      "slowest_hour": 0,
+      "revenue_by_hour": {
+        "0": 8357.7
+      }
+    },
+    "monthly_patterns": {
+      "transactions_by_month": {
+        "January": 100
+      },
+      "busiest_month": "January",
+      "slowest_month": "January",
+      "revenue_by_month": {
+        "January": 8357.7
+      }
+    }
+  }
+}

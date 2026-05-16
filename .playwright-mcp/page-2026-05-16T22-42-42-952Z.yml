@@ -1,0 +1,659 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e5]:
+        - heading "FastReports Dashboard" [level=1] [ref=e6]
+        - paragraph [ref=e7]: Interactive data analysis and visualization
+    - generic [ref=e8]:
+      - generic [ref=e9]:
+        - generic [ref=e10]: "Select Dataset:"
+        - combobox [ref=e11]:
+          - option "Choose a dataset..."
+          - option "Yelp Reviews"
+          - option "Purchase Log"
+          - option "Survey Answers"
+          - option "Layoffs" [selected]
+          - option "Laliga 25 26"
+          - option "Laliga 23 24"
+          - option "Laliga 24 25"
+          - option "Laliga 22 23"
+        - button "Load Demo Data" [ref=e12] [cursor=pointer]
+      - generic [ref=e19]:
+        - generic [ref=e20]:
+          - generic [ref=e21]: Total Rows
+          - generic [ref=e22]: 2,361
+        - generic [ref=e23]:
+          - generic [ref=e24]: Filtered Rows
+          - generic [ref=e25]: 2,361
+        - generic [ref=e26]:
+          - generic [ref=e27]: Columns
+          - generic [ref=e28]: "9"
+        - generic [ref=e29]:
+          - generic [ref=e30]: Quality Score
+          - generic [ref=e31]: "100"
+      - generic [ref=e32]:
+        - generic [ref=e33]:
+          - heading "Filters & Query" [level=3] [ref=e34]
+          - generic [ref=e35]:
+            - button "Clear All" [disabled] [ref=e36]
+            - button "Show SQL Query" [ref=e37] [cursor=pointer]
+        - generic [ref=e38]:
+          - generic [ref=e39]:
+            - generic [ref=e40]: company
+            - textbox "Filter company..." [ref=e41]
+          - generic [ref=e42]:
+            - generic [ref=e43]: location
+            - textbox "Filter location..." [ref=e44]
+          - generic [ref=e45]:
+            - generic [ref=e46]: industry
+            - combobox [ref=e47]:
+              - option "All" [selected]
+              - option "Other"
+              - option "Media"
+              - option "Retail"
+              - option "Education"
+              - option "Real Estate"
+              - option "Transportation"
+              - option "Marketing"
+              - option "Healthcare"
+              - option "Security"
+              - option "Food"
+              - option "Fitness"
+              - option "Consumer"
+              - option "Logistics"
+              - option "HR"
+              - option "Support"
+              - option "Travel"
+              - option "Crypto"
+              - option "Finance"
+              - option "Data"
+              - option "Sales"
+              - option "Infrastructure"
+              - option "Hardware"
+              - option "Product"
+              - option "Construction"
+              - option "Legal"
+              - option "Energy"
+              - option "Manufacturing"
+              - option "Recruiting"
+              - option "Aerospace"
+              - option "Crypto Currency"
+              - option "Fin-Tech"
+              - option "CryptoCurrency"
+          - generic [ref=e48]:
+            - generic [ref=e49]: total_laid_off
+            - generic [ref=e50]:
+              - spinbutton [ref=e51]
+              - spinbutton [ref=e52]
+          - generic [ref=e53]:
+            - generic [ref=e54]: percentage_laid_off
+            - generic [ref=e55]:
+              - spinbutton [ref=e56]
+              - spinbutton [ref=e57]
+          - generic [ref=e58]:
+            - generic [ref=e59]: date
+            - textbox "Filter date..." [ref=e60]
+          - generic [ref=e61]:
+            - generic [ref=e62]: stage
+            - combobox [ref=e63]:
+              - option "All" [selected]
+              - option "Post-IPO"
+              - option "Series B"
+              - option "Unknown"
+              - option "Acquired"
+              - option "Series F"
+              - option "Series E"
+              - option "Series A"
+              - option "Subsidiary"
+              - option "Series C"
+              - option "Series G"
+              - option "Series D"
+              - option "Seed"
+              - option "Series H"
+              - option "Private Equity"
+              - option "Series J"
+              - option "Series I"
+          - generic [ref=e64]:
+            - generic [ref=e65]: country
+            - textbox "Filter country..." [ref=e66]
+          - generic [ref=e67]:
+            - generic [ref=e68]: funds_raised_millions
+            - generic [ref=e69]:
+              - spinbutton [ref=e70]
+              - spinbutton [ref=e71]
+      - generic [ref=e72]:
+        - button "📊 Data Table" [active] [ref=e73] [cursor=pointer]
+        - button "📈 Visualizations" [ref=e74] [cursor=pointer]
+      - generic [ref=e140]:
+        - generic [ref=e141]:
+          - generic [ref=e142]: Showing 1-50 of 2361 rows
+          - button "Export CSV" [ref=e144] [cursor=pointer]
+        - table [ref=e146]:
+          - rowgroup [ref=e147]:
+            - row "company location industry total_laid_off percentage_laid_off date stage country funds_raised_millions" [ref=e148]:
+              - columnheader "company" [ref=e149] [cursor=pointer]:
+                - generic [ref=e151]: company
+              - columnheader "location" [ref=e152] [cursor=pointer]:
+                - generic [ref=e154]: location
+              - columnheader "industry" [ref=e155] [cursor=pointer]:
+                - generic [ref=e157]: industry
+              - columnheader "total_laid_off" [ref=e158] [cursor=pointer]:
+                - generic [ref=e160]: total_laid_off
+              - columnheader "percentage_laid_off" [ref=e161] [cursor=pointer]:
+                - generic [ref=e163]: percentage_laid_off
+              - columnheader "date" [ref=e164] [cursor=pointer]:
+                - generic [ref=e166]: date
+              - columnheader "stage" [ref=e167] [cursor=pointer]:
+                - generic [ref=e169]: stage
+              - columnheader "country" [ref=e170] [cursor=pointer]:
+                - generic [ref=e172]: country
+              - columnheader "funds_raised_millions" [ref=e173] [cursor=pointer]:
+                - generic [ref=e175]: funds_raised_millions
+          - rowgroup [ref=e176]:
+            - row "Atlassian Sydney Other 500 0.05 3/6/2023 Post-IPO Australia 210" [ref=e177]:
+              - cell "Atlassian" [ref=e178]
+              - cell "Sydney" [ref=e179]
+              - cell "Other" [ref=e180]
+              - cell "500" [ref=e181]
+              - cell "0.05" [ref=e182]
+              - cell "3/6/2023" [ref=e183]
+              - cell "Post-IPO" [ref=e184]
+              - cell "Australia" [ref=e185]
+              - cell "210" [ref=e186]
+            - row "SiriusXM New York City Media 475 0.08 3/6/2023 Post-IPO United States 525" [ref=e187]:
+              - cell "SiriusXM" [ref=e188]
+              - cell "New York City" [ref=e189]
+              - cell "Media" [ref=e190]
+              - cell "475" [ref=e191]
+              - cell "0.08" [ref=e192]
+              - cell "3/6/2023" [ref=e193]
+              - cell "Post-IPO" [ref=e194]
+              - cell "United States" [ref=e195]
+              - cell "525" [ref=e196]
+            - row "Alerzo Ibadan Retail 400 - 3/6/2023 Series B Nigeria 16" [ref=e197]:
+              - cell "Alerzo" [ref=e198]
+              - cell "Ibadan" [ref=e199]
+              - cell "Retail" [ref=e200]
+              - cell "400" [ref=e201]
+              - cell "-" [ref=e202]
+              - cell "3/6/2023" [ref=e203]
+              - cell "Series B" [ref=e204]
+              - cell "Nigeria" [ref=e205]
+              - cell "16" [ref=e206]
+            - row "UpGrad Mumbai Education 120 - 3/6/2023 Unknown India 631" [ref=e207]:
+              - cell "UpGrad" [ref=e208]
+              - cell "Mumbai" [ref=e209]
+              - cell "Education" [ref=e210]
+              - cell "120" [ref=e211]
+              - cell "-" [ref=e212]
+              - cell "3/6/2023" [ref=e213]
+              - cell "Unknown" [ref=e214]
+              - cell "India" [ref=e215]
+              - cell "631" [ref=e216]
+            - row "Loft Sao Paulo Real Estate 340 0.15 3/3/2023 Unknown Brazil 788" [ref=e217]:
+              - cell "Loft" [ref=e218]
+              - cell "Sao Paulo" [ref=e219]
+              - cell "Real Estate" [ref=e220]
+              - cell "340" [ref=e221]
+              - cell "0.15" [ref=e222]
+              - cell "3/3/2023" [ref=e223]
+              - cell "Unknown" [ref=e224]
+              - cell "Brazil" [ref=e225]
+              - cell "788" [ref=e226]
+            - row "Embark Trucks SF Bay Area Transportation 230 0.7 3/3/2023 Post-IPO United States 317" [ref=e227]:
+              - cell "Embark Trucks" [ref=e228]
+              - cell "SF Bay Area" [ref=e229]
+              - cell "Transportation" [ref=e230]
+              - cell "230" [ref=e231]
+              - cell "0.7" [ref=e232]
+              - cell "3/3/2023" [ref=e233]
+              - cell "Post-IPO" [ref=e234]
+              - cell "United States" [ref=e235]
+              - cell "317" [ref=e236]
+            - row "Lendi Sydney Real Estate 100 - 3/3/2023 Unknown Australia 59" [ref=e237]:
+              - cell "Lendi" [ref=e238]
+              - cell "Sydney" [ref=e239]
+              - cell "Real Estate" [ref=e240]
+              - cell "100" [ref=e241]
+              - cell "-" [ref=e242]
+              - cell "3/3/2023" [ref=e243]
+              - cell "Unknown" [ref=e244]
+              - cell "Australia" [ref=e245]
+              - cell "59" [ref=e246]
+            - row "UserTesting SF Bay Area Marketing 63 - 3/3/2023 Acquired United States 152" [ref=e247]:
+              - cell "UserTesting" [ref=e248]
+              - cell "SF Bay Area" [ref=e249]
+              - cell "Marketing" [ref=e250]
+              - cell "63" [ref=e251]
+              - cell "-" [ref=e252]
+              - cell "3/3/2023" [ref=e253]
+              - cell "Acquired" [ref=e254]
+              - cell "United States" [ref=e255]
+              - cell "152" [ref=e256]
+            - row "Airbnb SF Bay Area - 30 - 3/3/2023 Post-IPO United States 6,400" [ref=e257]:
+              - cell "Airbnb" [ref=e258]
+              - cell "SF Bay Area" [ref=e259]
+              - cell "-" [ref=e260]
+              - cell "30" [ref=e261]
+              - cell "-" [ref=e262]
+              - cell "3/3/2023" [ref=e263]
+              - cell "Post-IPO" [ref=e264]
+              - cell "United States" [ref=e265]
+              - cell "6,400" [ref=e266]
+            - row "Accolade Seattle Healthcare - - 3/3/2023 Post-IPO United States 458" [ref=e267]:
+              - cell "Accolade" [ref=e268]
+              - cell "Seattle" [ref=e269]
+              - cell "Healthcare" [ref=e270]
+              - cell "-" [ref=e271]
+              - cell "-" [ref=e272]
+              - cell "3/3/2023" [ref=e273]
+              - cell "Post-IPO" [ref=e274]
+              - cell "United States" [ref=e275]
+              - cell "458" [ref=e276]
+            - row "Indigo Boston Other - - 3/3/2023 Series F United States. 1,200" [ref=e277]:
+              - cell "Indigo" [ref=e278]
+              - cell "Boston" [ref=e279]
+              - cell "Other" [ref=e280]
+              - cell "-" [ref=e281]
+              - cell "-" [ref=e282]
+              - cell "3/3/2023" [ref=e283]
+              - cell "Series F" [ref=e284]
+              - cell "United States." [ref=e285]
+              - cell "1,200" [ref=e286]
+            - row "Zscaler SF Bay Area Security 177 0.03 3/2/2023 Post-IPO United States 148" [ref=e287]:
+              - cell "Zscaler" [ref=e288]
+              - cell "SF Bay Area" [ref=e289]
+              - cell "Security" [ref=e290]
+              - cell "177" [ref=e291]
+              - cell "0.03" [ref=e292]
+              - cell "3/2/2023" [ref=e293]
+              - cell "Post-IPO" [ref=e294]
+              - cell "United States" [ref=e295]
+              - cell "148" [ref=e296]
+            - row "MasterClass SF Bay Area Education 79 - 3/2/2023 Series E United States 461" [ref=e297]:
+              - cell "MasterClass" [ref=e298]
+              - cell "SF Bay Area" [ref=e299]
+              - cell "Education" [ref=e300]
+              - cell "79" [ref=e301]
+              - cell "-" [ref=e302]
+              - cell "3/2/2023" [ref=e303]
+              - cell "Series E" [ref=e304]
+              - cell "United States" [ref=e305]
+              - cell "461" [ref=e306]
+            - row "Ambev Tech Blumenau Food 50 - 3/2/2023 Acquired Brazil -" [ref=e307]:
+              - cell "Ambev Tech" [ref=e308]
+              - cell "Blumenau" [ref=e309]
+              - cell "Food" [ref=e310]
+              - cell "50" [ref=e311]
+              - cell "-" [ref=e312]
+              - cell "3/2/2023" [ref=e313]
+              - cell "Acquired" [ref=e314]
+              - cell "Brazil" [ref=e315]
+              - cell "-" [ref=e316]
+            - row "Fittr Pune Fitness 30 0.11 3/2/2023 Series A India 13" [ref=e317]:
+              - cell "Fittr" [ref=e318]
+              - cell "Pune" [ref=e319]
+              - cell "Fitness" [ref=e320]
+              - cell "30" [ref=e321]
+              - cell "0.11" [ref=e322]
+              - cell "3/2/2023" [ref=e323]
+              - cell "Series A" [ref=e324]
+              - cell "India" [ref=e325]
+              - cell "13" [ref=e326]
+            - row "CNET SF Bay Area Media 12 0.1 3/2/2023 Acquired United States 20" [ref=e327]:
+              - cell "CNET" [ref=e328]
+              - cell "SF Bay Area" [ref=e329]
+              - cell "Media" [ref=e330]
+              - cell "12" [ref=e331]
+              - cell "0.1" [ref=e332]
+              - cell "3/2/2023" [ref=e333]
+              - cell "Acquired" [ref=e334]
+              - cell "United States" [ref=e335]
+              - cell "20" [ref=e336]
+            - row "Flipkart Bengaluru Retail - - 3/2/2023 Acquired India 12,900" [ref=e337]:
+              - cell "Flipkart" [ref=e338]
+              - cell "Bengaluru" [ref=e339]
+              - cell "Retail" [ref=e340]
+              - cell "-" [ref=e341]
+              - cell "-" [ref=e342]
+              - cell "3/2/2023" [ref=e343]
+              - cell "Acquired" [ref=e344]
+              - cell "India" [ref=e345]
+              - cell "12,900" [ref=e346]
+            - row "Kandela Los Angeles Consumer - 1 3/2/2023 Acquired United States -" [ref=e347]:
+              - cell "Kandela" [ref=e348]
+              - cell "Los Angeles" [ref=e349]
+              - cell "Consumer" [ref=e350]
+              - cell "-" [ref=e351]
+              - cell "1" [ref=e352]
+              - cell "3/2/2023" [ref=e353]
+              - cell "Acquired" [ref=e354]
+              - cell "United States" [ref=e355]
+              - cell "-" [ref=e356]
+            - row "Truckstop.com Boise Logistics - - 3/2/2023 Acquired United States -" [ref=e357]:
+              - cell "Truckstop.com" [ref=e358]
+              - cell "Boise" [ref=e359]
+              - cell "Logistics" [ref=e360]
+              - cell "-" [ref=e361]
+              - cell "-" [ref=e362]
+              - cell "3/2/2023" [ref=e363]
+              - cell "Acquired" [ref=e364]
+              - cell "United States" [ref=e365]
+              - cell "-" [ref=e366]
+            - row "Thoughtworks Chicago Other 500 0.04 3/1/2023 Post-IPO United States 748" [ref=e367]:
+              - cell "Thoughtworks" [ref=e368]
+              - cell "Chicago" [ref=e369]
+              - cell "Other" [ref=e370]
+              - cell "500" [ref=e371]
+              - cell "0.04" [ref=e372]
+              - cell "3/1/2023" [ref=e373]
+              - cell "Post-IPO" [ref=e374]
+              - cell "United States" [ref=e375]
+              - cell "748" [ref=e376]
+            - row "iFood Sao Paulo Food 355 0.06 3/1/2023 Subsidiary Brazil 2,100" [ref=e377]:
+              - cell "iFood" [ref=e378]
+              - cell "Sao Paulo" [ref=e379]
+              - cell "Food" [ref=e380]
+              - cell "355" [ref=e381]
+              - cell "0.06" [ref=e382]
+              - cell "3/1/2023" [ref=e383]
+              - cell "Subsidiary" [ref=e384]
+              - cell "Brazil" [ref=e385]
+              - cell "2,100" [ref=e386]
+            - row "Color Health SF Bay Area Healthcare 300 - 3/1/2023 Series E United States 482" [ref=e387]:
+              - cell "Color Health" [ref=e388]
+              - cell "SF Bay Area" [ref=e389]
+              - cell "Healthcare" [ref=e390]
+              - cell "300" [ref=e391]
+              - cell "-" [ref=e392]
+              - cell "3/1/2023" [ref=e393]
+              - cell "Series E" [ref=e394]
+              - cell "United States" [ref=e395]
+              - cell "482" [ref=e396]
+            - row "Waymo SF Bay Area Transportation 209 0.08 3/1/2023 Subsidiary United States 5,500" [ref=e397]:
+              - cell "Waymo" [ref=e398]
+              - cell "SF Bay Area" [ref=e399]
+              - cell "Transportation" [ref=e400]
+              - cell "209" [ref=e401]
+              - cell "0.08" [ref=e402]
+              - cell "3/1/2023" [ref=e403]
+              - cell "Subsidiary" [ref=e404]
+              - cell "United States" [ref=e405]
+              - cell "5,500" [ref=e406]
+            - row "PayFit Paris HR 200 0.2 3/1/2023 Series E France 495" [ref=e407]:
+              - cell "PayFit" [ref=e408]
+              - cell "Paris" [ref=e409]
+              - cell "HR" [ref=e410]
+              - cell "200" [ref=e411]
+              - cell "0.2" [ref=e412]
+              - cell "3/1/2023" [ref=e413]
+              - cell "Series E" [ref=e414]
+              - cell "France" [ref=e415]
+              - cell "495" [ref=e416]
+            - row "Yellow.ai SF Bay Area Support 200 - 3/1/2023 Series C United States 102" [ref=e417]:
+              - cell "Yellow.ai" [ref=e418]
+              - cell "SF Bay Area" [ref=e419]
+              - cell "Support" [ref=e420]
+              - cell "200" [ref=e421]
+              - cell "-" [ref=e422]
+              - cell "3/1/2023" [ref=e423]
+              - cell "Series C" [ref=e424]
+              - cell "United States" [ref=e425]
+              - cell "102" [ref=e426]
+            - row "Sonder SF Bay Area Travel 100 0.14 3/1/2023 Post-IPO United States 839" [ref=e427]:
+              - cell "Sonder" [ref=e428]
+              - cell "SF Bay Area" [ref=e429]
+              - cell "Travel" [ref=e430]
+              - cell "100" [ref=e431]
+              - cell "0.14" [ref=e432]
+              - cell "3/1/2023" [ref=e433]
+              - cell "Post-IPO" [ref=e434]
+              - cell "United States" [ref=e435]
+              - cell "839" [ref=e436]
+            - row "Protego Trust Bank Seattle Crypto - 0.5 3/1/2023 Series A United States 70" [ref=e437]:
+              - cell "Protego Trust Bank" [ref=e438]
+              - cell "Seattle" [ref=e439]
+              - cell "Crypto" [ref=e440]
+              - cell "-" [ref=e441]
+              - cell "0.5" [ref=e442]
+              - cell "3/1/2023" [ref=e443]
+              - cell "Series A" [ref=e444]
+              - cell "United States" [ref=e445]
+              - cell "70" [ref=e446]
+            - row "Electronic Arts Baton Rouge Consumer 200 - 2/28/2023 Post-IPO United States 2" [ref=e447]:
+              - cell "Electronic Arts" [ref=e448]
+              - cell "Baton Rouge" [ref=e449]
+              - cell "Consumer" [ref=e450]
+              - cell "200" [ref=e451]
+              - cell "-" [ref=e452]
+              - cell "2/28/2023" [ref=e453]
+              - cell "Post-IPO" [ref=e454]
+              - cell "United States" [ref=e455]
+              - cell "2" [ref=e456]
+            - row "Eventbrite SF Bay Area Consumer 80 0.08 2/28/2023 Post-IPO United States 557" [ref=e457]:
+              - cell "Eventbrite" [ref=e458]
+              - cell "SF Bay Area" [ref=e459]
+              - cell "Consumer" [ref=e460]
+              - cell "80" [ref=e461]
+              - cell "0.08" [ref=e462]
+              - cell "2/28/2023" [ref=e463]
+              - cell "Post-IPO" [ref=e464]
+              - cell "United States" [ref=e465]
+              - cell "557" [ref=e466]
+            - row "DUX Education Bengaluru Education - 1 2/28/2023 Unknown India -" [ref=e467]:
+              - cell "DUX Education" [ref=e468]
+              - cell "Bengaluru" [ref=e469]
+              - cell "Education" [ref=e470]
+              - cell "-" [ref=e471]
+              - cell "1" [ref=e472]
+              - cell "2/28/2023" [ref=e473]
+              - cell "Unknown" [ref=e474]
+              - cell "India" [ref=e475]
+              - cell "-" [ref=e476]
+            - row "MeridianLink Los Angeles Finance - 0.09 2/28/2023 Post-IPO United States 485" [ref=e477]:
+              - cell "MeridianLink" [ref=e478]
+              - cell "Los Angeles" [ref=e479]
+              - cell "Finance" [ref=e480]
+              - cell "-" [ref=e481]
+              - cell "0.09" [ref=e482]
+              - cell "2/28/2023" [ref=e483]
+              - cell "Post-IPO" [ref=e484]
+              - cell "United States" [ref=e485]
+              - cell "485" [ref=e486]
+            - row "Sono Motors Munich Transportation 300 - 2/27/2023 Post-IPO Germany 126" [ref=e487]:
+              - cell "Sono Motors" [ref=e488]
+              - cell "Munich" [ref=e489]
+              - cell "Transportation" [ref=e490]
+              - cell "300" [ref=e491]
+              - cell "-" [ref=e492]
+              - cell "2/27/2023" [ref=e493]
+              - cell "Post-IPO" [ref=e494]
+              - cell "Germany" [ref=e495]
+              - cell "126" [ref=e496]
+            - row "Cerebral SF Bay Area Healthcare 285 0.15 2/27/2023 Series C United States 462" [ref=e497]:
+              - cell "Cerebral" [ref=e498]
+              - cell "SF Bay Area" [ref=e499]
+              - cell "Healthcare" [ref=e500]
+              - cell "285" [ref=e501]
+              - cell "0.15" [ref=e502]
+              - cell "2/27/2023" [ref=e503]
+              - cell "Series C" [ref=e504]
+              - cell "United States" [ref=e505]
+              - cell "462" [ref=e506]
+            - row "Amount Chicago Finance 130 0.25 2/27/2023 Unknown United States 283" [ref=e507]:
+              - cell "Amount" [ref=e508]
+              - cell "Chicago" [ref=e509]
+              - cell "Finance" [ref=e510]
+              - cell "130" [ref=e511]
+              - cell "0.25" [ref=e512]
+              - cell "2/27/2023" [ref=e513]
+              - cell "Unknown" [ref=e514]
+              - cell "United States" [ref=e515]
+              - cell "283" [ref=e516]
+            - row "Palantir Denver Data 75 0.02 2/27/2023 Post-IPO United States. 3,000" [ref=e517]:
+              - cell "Palantir" [ref=e518]
+              - cell "Denver" [ref=e519]
+              - cell "Data" [ref=e520]
+              - cell "75" [ref=e521]
+              - cell "0.02" [ref=e522]
+              - cell "2/27/2023" [ref=e523]
+              - cell "Post-IPO" [ref=e524]
+              - cell "United States." [ref=e525]
+              - cell "3,000" [ref=e526]
+            - row "Outreach Seattle Sales 70 0.07 2/27/2023 Series G United States 489" [ref=e527]:
+              - cell "Outreach" [ref=e528]
+              - cell "Seattle" [ref=e529]
+              - cell "Sales" [ref=e530]
+              - cell "70" [ref=e531]
+              - cell "0.07" [ref=e532]
+              - cell "2/27/2023" [ref=e533]
+              - cell "Series G" [ref=e534]
+              - cell "United States" [ref=e535]
+              - cell "489" [ref=e536]
+            - row "Stytch SF Bay Area Security 19 0.25 2/27/2023 Series B United States 126" [ref=e537]:
+              - cell "Stytch" [ref=e538]
+              - cell "SF Bay Area" [ref=e539]
+              - cell "Security" [ref=e540]
+              - cell "19" [ref=e541]
+              - cell "0.25" [ref=e542]
+              - cell "2/27/2023" [ref=e543]
+              - cell "Series B" [ref=e544]
+              - cell "United States" [ref=e545]
+              - cell "126" [ref=e546]
+            - row "BitSight Tel Aviv Security 40 - 2/26/2023 Unknown Israel 401" [ref=e547]:
+              - cell "BitSight" [ref=e548]
+              - cell "Tel Aviv" [ref=e549]
+              - cell "Security" [ref=e550]
+              - cell "40" [ref=e551]
+              - cell "-" [ref=e552]
+              - cell "2/26/2023" [ref=e553]
+              - cell "Unknown" [ref=e554]
+              - cell "Israel" [ref=e555]
+              - cell "401" [ref=e556]
+            - row "Twitter SF Bay Area Consumer 200 0.1 2/25/2023 Post-IPO United States 12,900" [ref=e557]:
+              - cell "Twitter" [ref=e558]
+              - cell "SF Bay Area" [ref=e559]
+              - cell "Consumer" [ref=e560]
+              - cell "200" [ref=e561]
+              - cell "0.1" [ref=e562]
+              - cell "2/25/2023" [ref=e563]
+              - cell "Post-IPO" [ref=e564]
+              - cell "United States" [ref=e565]
+              - cell "12,900" [ref=e566]
+            - row "Ericsson Stockholm Other 8,500 0.08 2/24/2023 Post-IPO Sweden 663" [ref=e567]:
+              - cell "Ericsson" [ref=e568]
+              - cell "Stockholm" [ref=e569]
+              - cell "Other" [ref=e570]
+              - cell "8,500" [ref=e571]
+              - cell "0.08" [ref=e572]
+              - cell "2/24/2023" [ref=e573]
+              - cell "Post-IPO" [ref=e574]
+              - cell "Sweden" [ref=e575]
+              - cell "663" [ref=e576]
+            - row "SAP Labs Bengaluru Other 300 - 2/24/2023 Subsidiary India 1,300" [ref=e577]:
+              - cell "SAP Labs" [ref=e578]
+              - cell "Bengaluru" [ref=e579]
+              - cell "Other" [ref=e580]
+              - cell "300" [ref=e581]
+              - cell "-" [ref=e582]
+              - cell "2/24/2023" [ref=e583]
+              - cell "Subsidiary" [ref=e584]
+              - cell "India" [ref=e585]
+              - cell "1,300" [ref=e586]
+            - row "Velodyne Lidar SF Bay Area Transportation 220 - 2/24/2023 Acquired United States 575" [ref=e587]:
+              - cell "Velodyne Lidar" [ref=e588]
+              - cell "SF Bay Area" [ref=e589]
+              - cell "Transportation" [ref=e590]
+              - cell "220" [ref=e591]
+              - cell "-" [ref=e592]
+              - cell "2/24/2023" [ref=e593]
+              - cell "Acquired" [ref=e594]
+              - cell "United States" [ref=e595]
+              - cell "575" [ref=e596]
+            - row "Medallia SF Bay Area Support 59 - 2/24/2023 Acquired United States 325" [ref=e597]:
+              - cell "Medallia" [ref=e598]
+              - cell "SF Bay Area" [ref=e599]
+              - cell "Support" [ref=e600]
+              - cell "59" [ref=e601]
+              - cell "-" [ref=e602]
+              - cell "2/24/2023" [ref=e603]
+              - cell "Acquired" [ref=e604]
+              - cell "United States" [ref=e605]
+              - cell "325" [ref=e606]
+            - row "Eat Just SF Bay Area Food 40 - 2/24/2023 Unknown United States 465" [ref=e607]:
+              - cell "Eat Just" [ref=e608]
+              - cell "SF Bay Area" [ref=e609]
+              - cell "Food" [ref=e610]
+              - cell "40" [ref=e611]
+              - cell "-" [ref=e612]
+              - cell "2/24/2023" [ref=e613]
+              - cell "Unknown" [ref=e614]
+              - cell "United States" [ref=e615]
+              - cell "465" [ref=e616]
+            - row "Lucira Health SF Bay Area Healthcare 26 - 2/24/2023 Post-IPO United States 132" [ref=e617]:
+              - cell "Lucira Health" [ref=e618]
+              - cell "SF Bay Area" [ref=e619]
+              - cell "Healthcare" [ref=e620]
+              - cell "26" [ref=e621]
+              - cell "-" [ref=e622]
+              - cell "2/24/2023" [ref=e623]
+              - cell "Post-IPO" [ref=e624]
+              - cell "United States" [ref=e625]
+              - cell "132" [ref=e626]
+            - row "Stax Orlando Finance 24 - 2/24/2023 Series D United States 263" [ref=e627]:
+              - cell "Stax" [ref=e628]
+              - cell "Orlando" [ref=e629]
+              - cell "Finance" [ref=e630]
+              - cell "24" [ref=e631]
+              - cell "-" [ref=e632]
+              - cell "2/24/2023" [ref=e633]
+              - cell "Series D" [ref=e634]
+              - cell "United States" [ref=e635]
+              - cell "263" [ref=e636]
+            - row "Poshmark SF Bay Area Retail - 0.02 2/24/2023 Acquired United States 153" [ref=e637]:
+              - cell "Poshmark" [ref=e638]
+              - cell "SF Bay Area" [ref=e639]
+              - cell "Retail" [ref=e640]
+              - cell "-" [ref=e641]
+              - cell "0.02" [ref=e642]
+              - cell "2/24/2023" [ref=e643]
+              - cell "Acquired" [ref=e644]
+              - cell "United States" [ref=e645]
+              - cell "153" [ref=e646]
+            - row "Merative Ann Arbor Healthcare 200 0.1 2/23/2023 Acquired United States -" [ref=e647]:
+              - cell "Merative" [ref=e648]
+              - cell "Ann Arbor" [ref=e649]
+              - cell "Healthcare" [ref=e650]
+              - cell "200" [ref=e651]
+              - cell "0.1" [ref=e652]
+              - cell "2/23/2023" [ref=e653]
+              - cell "Acquired" [ref=e654]
+              - cell "United States" [ref=e655]
+              - cell "-" [ref=e656]
+            - row "OneFootball Berlin Marketing 150 0.32 2/23/2023 Series D Germany 442" [ref=e657]:
+              - cell "OneFootball" [ref=e658]
+              - cell "Berlin" [ref=e659]
+              - cell "Marketing" [ref=e660]
+              - cell "150" [ref=e661]
+              - cell "0.32" [ref=e662]
+              - cell "2/23/2023" [ref=e663]
+              - cell "Series D" [ref=e664]
+              - cell "Germany" [ref=e665]
+              - cell "442" [ref=e666]
+            - row "The Iconic Sydney Retail 69 0.06 2/23/2023 Unknown Australia -" [ref=e667]:
+              - cell "The Iconic" [ref=e668]
+              - cell "Sydney" [ref=e669]
+              - cell "Retail" [ref=e670]
+              - cell "69" [ref=e671]
+              - cell "0.06" [ref=e672]
+              - cell "2/23/2023" [ref=e673]
+              - cell "Unknown" [ref=e674]
+              - cell "Australia" [ref=e675]
+              - cell "-" [ref=e676]
+        - generic [ref=e677]:
+          - button "First" [disabled] [ref=e678]
+          - button "Previous" [disabled] [ref=e679]
+          - generic [ref=e680]: Page 1 of 48
+          - button "Next" [ref=e681] [cursor=pointer]
+          - button "Last" [ref=e682] [cursor=pointer]
+  - img [ref=e138]

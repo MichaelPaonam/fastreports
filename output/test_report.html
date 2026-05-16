@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Analysis Report — Sample Dataset</title>
+    <script src="https://cdn.plot.ly/plotly-2.26.0.min.js" defer></script>
+    
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 0 20px rgba(0,0,0,.1);
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+        header h1 { font-size: 2.2em; margin-bottom: 8px; }
+        header .subtitle { font-size: 1.2em; opacity: .9; }
+        header .timestamp { font-size: .85em; opacity: .7; margin-top: 6px; }
+
+        /* Table of contents */
+        .toc {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 16px 20px;
+            border-radius: 6px;
+            margin-bottom: 32px;
+        }
+        .toc strong { display: block; margin-bottom: 8px; color: #667eea; }
+        .toc ol { padding-left: 20px; }
+        .toc a { color: #667eea; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+
+        h2 {
+            color: #667eea;
+            margin: 0 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+            font-size: 1.5em;
+        }
+        h3 { color: #764ba2; margin: 20px 0 10px; font-size: 1.1em; }
+        h4 { color: #555; margin: 14px 0 8px; font-size: 1em; }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 24px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        /* Metric cards */
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin: 16px 0;
+        }
+        .metric-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,.08);
+            border-left: 4px solid #667eea;
+        }
+        .metric-label { font-size: .8em; color: #888; text-transform: uppercase; letter-spacing: .5px; }
+        .metric-value { font-size: 1.8em; font-weight: 700; color: #333; margin: 8px 0 4px; }
+        .metric-description { font-size: .82em; color: #999; }
+
+        /* Status badges */
+        .status-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: .82em;
+            font-weight: 600;
+        }
+        .status-good    { background: #d4edda; color: #155724; }
+        .status-warning { background: #fff3cd; color: #856404; }
+        .status-error   { background: #f8d7da; color: #721c24; }
+
+        /* Column type badge */
+        .col-type-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: .72em;
+            font-weight: 500;
+            background: #e9d8fd;
+            color: #553c9a;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+
+        /* Tables */
+        table { width: 100%; border-collapse: collapse; margin: 12px 0; background: white; }
+        th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #667eea; color: white; font-weight: 600; font-size: .9em; }
+        tr:hover td { background: #f5f5f5; }
+
+        /* Missing-value progress bar */
+        .bar-bg {
+            display: inline-block;
+            width: 80px;
+            height: 8px;
+            background: #eee;
+            border-radius: 4px;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+        .bar-fill {
+            height: 100%;
+            background: #667eea;
+            border-radius: 4px;
+        }
+
+        /* Chart containers — no inline scripts */
+        .chart-container {
+            margin: 24px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,.08);
+        }
+        .chart-title { font-size: 1.05em; font-weight: 600; color: #444; margin-bottom: 12px; }
+        .chart-container > div[id^="chart_"] { min-height: 400px; }
+
+        /* Column profile cards */
+        .column-profile {
+            background: white;
+            padding: 16px;
+            margin: 12px 0;
+            border-radius: 8px;
+            border-left: 4px solid #764ba2;
+        }
+        .column-name { font-weight: 600; font-size: 1.05em; color: #333; margin-bottom: 10px; }
+        .column-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .stat-item { padding: 8px; background: #f9f9f9; border-radius: 4px; }
+        .stat-label { display: block; font-size: .78em; color: #888; margin-bottom: 2px; }
+        .stat-value { font-weight: 600; color: #333; font-size: .95em; }
+
+        /* Analysis results fallback */
+        .json-block {
+            background: #f5f5f5;
+            padding: 14px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: .82em;
+            line-height: 1.5;
+        }
+
+        footer {
+            margin-top: 48px;
+            padding: 20px;
+            text-align: center;
+            color: #999;
+            border-top: 1px solid #eee;
+            font-size: .88em;
+        }
+
+        @media print {
+            body { background: white; }
+            .container { box-shadow: none; }
+            .chart-container, .section { page-break-inside: avoid; }
+            .toc { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+    <header>
+        <h1>Data Analysis Report</h1>
+        <p class="subtitle">Sample Dataset</p>
+        <p class="timestamp">Generated: 2026-05-17T04:28:38.698506</p>
+    </header>
+        <nav class="toc">
+            <strong>Contents</strong>
+            <ol><li><a href="#executive-summary">Executive Summary</a></li>
+<li><a href="#data-overview">Data Overview</a></li>
+<li><a href="#data-quality">Data Quality</a></li>
+<li><a href="#column-profiles">Column Profiles</a></li>
+<li><a href="#visualizations">Visualizations</a></li>
+<li><a href="#analysis-results">Analysis Results</a></li></ol>
+        </nav>
+        
+    <section class="section" id="executive-summary">
+        <h2>Executive Summary</h2>
+        <div class="metric-grid">
+            <div class="metric-card">
+                <div class="metric-label">Total Rows</div>
+                <div class="metric-value">100</div>
+                <div class="metric-description">Data records</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Total Columns</div>
+                <div class="metric-value">7</div>
+                <div class="metric-description">Features analyzed</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Data Quality</div>
+                <div class="metric-value"><span class="status-badge status-good">Excellent</span></div>
+                <div class="metric-description">1.7% missing, 0.0% duplicates</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Memory Usage</div>
+                <div class="metric-value">0.0 MB</div>
+                <div class="metric-description">Total size</div>
+            </div>
+            
+        </div>
+    </section>
+
+    <section class="section" id="data-overview">
+        <h2>Data Overview</h2>
+        <table>
+            <thead><tr><th>Metric</th><th>Value</th></tr></thead>
+            <tbody>
+                <tr><td>Total Rows</td><td>100</td></tr>
+                <tr><td>Total Columns</td><td>7</td></tr>
+                <tr><td>Total Cells</td><td>700</td></tr>
+                <tr><td>Memory Usage</td><td>0.02 MB</td></tr>
+            </tbody>
+        </table>
+        <h3>Column Types</h3><table><thead><tr><th>Data Type</th><th>Count</th></tr></thead><tbody><tr><td>str</td><td>3</td></tr>
+<tr><td>float64</td><td>3</td></tr>
+<tr><td>int64</td><td>1</td></tr></tbody></table>
+    </section>
+
+    <section class="section" id="data-quality">
+        <h2>Data Quality Assessment</h2>
+        <h3>Missing Values</h3>
+        <div class="metric-grid">
+            <div class="metric-card">
+                <div class="metric-label">Total Missing</div>
+                <div class="metric-value">12</div>
+                <div class="metric-description">1.71% of all cells</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Affected Columns</div>
+                <div class="metric-value">2</div>
+                <div class="metric-description">Columns with missing data</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Affected Rows</div>
+                <div class="metric-value">12</div>
+                <div class="metric-description">12.00% of rows</div>
+            </div>
+        </div>
+        
+        <h3>Duplicate Records</h3>
+        <div class="metric-grid">
+            <div class="metric-card">
+                <div class="metric-label">Duplicate Rows</div>
+                <div class="metric-value">0</div>
+                <div class="metric-description">0.00% of total</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Unique Rows</div>
+                <div class="metric-value">100</div>
+                <div class="metric-description">Distinct records</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="column-profiles">
+        <h2>Column Profiles</h2>
+        
+        <div class="column-profile">
+            <div class="column-name">id <span class="col-type-badge">numeric</span></div>
+            <div class="column-stats"><div class="stat-item"><span class="stat-label">Type</span><span class="stat-value">int64</span></div><div class="stat-item"><span class="stat-label">Non-Null</span><span class="stat-value">100</span></div><div class="stat-item"><span class="stat-label">Missing</span><span class="stat-value">0.0</span></div><div class="stat-item"><span class="stat-label">Unique</span><span class="stat-value">100</span></div><div class="stat-item"><span class="stat-label">Mean</span><span class="stat-value">50.50</span></div><div class="stat-item"><span class="stat-label">Std Dev</span><span class="stat-value">29.01</span></div><div class="stat-item"><span class="stat-label">Min</span><span class="stat-value">1.00</span></div><div class="stat-item"><span class="stat-label">Max</span><span class="stat-value">100.00</span></div><div class="stat-item"><span class="stat-label">Outliers</span><span class="stat-value">0.0</span></div></div>
+        </div>
+        <div class="column-profile">
+            <div class="column-name">name <span class="col-type-badge">text</span></div>
+            <div class="column-stats"><div class="stat-item"><span class="stat-label">Type</span><span class="stat-value">str</span></div><div class="stat-item"><span class="stat-label">Non-Null</span><span class="stat-value">100</span></div><div class="stat-item"><span class="stat-label">Missing</span><span class="stat-value">0.0</span></div><div class="stat-item"><span class="stat-label">Unique</span><span class="stat-value">100</span></div><div class="stat-item"><span class="stat-label">Min Length</span><span class="stat-value">5</span></div><div class="stat-item"><span class="stat-label">Max Length</span><span class="stat-value">7</span></div><div class="stat-item"><span class="stat-label">Avg Length</span><span class="stat-value">5.9</span></div></div>
+        </div>
+        <div class="column-profile">
+            <div class="column-name">age <span class="col-type-badge">numeric</span></div>
+            <div class="column-stats"><div class="stat-item"><span class="stat-label">Type</span><span class="stat-value">float64</span></div><div class="stat-item"><span class="stat-label">Non-Null</span><span class="stat-value">94</span></div><div class="stat-item"><span class="stat-label">Missing</span><span class="stat-value">6.0</span></div><div class="stat-item"><span class="stat-label">Unique</span><span class="stat-value">50</span></div><div class="stat-item"><span class="stat-label">Mean</span><span class="stat-value">50.20</span></div><div class="stat-item"><span class="stat-label">Std Dev</span><span class="stat-value">19.12</span></div><div class="stat-item"><span class="stat-label">Min</span><span class="stat-value">19.00</span></div><div class="stat-item"><span class="stat-label">Max</span><span class="stat-value">79.00</span></div><div class="stat-item"><span class="stat-label">Outliers</span><span class="stat-value">0.0</span></div></div>
+        </div>
+        <div class="column-profile">
+            <div class="column-name">score <span class="col-type-badge">numeric</span></div>
+            <div class="column-stats"><div class="stat-item"><span class="stat-label">Type</span><span class="stat-value">float64</span></div><div class="stat-item"><span class="stat-label">Non-Null</span><span class="stat-value">94</span></div><div class="stat-item"><span class="stat-label">Missing</span><span class="stat-value">6.0</span></div><div class="stat-item"><span class="stat-label">Unique</span><span class="stat-value">94</span></div><div class="stat-item"><span class="stat-label">Mean</span><span class="stat-value">75.39</span></div><div class="stat-item"><span class="stat-label">Std Dev</span><span class="stat-value">14.87</span></div><div class="stat-item"><span class="stat-label">Min</span><span class="stat-value">37.52</span></div><div class="stat-item"><span class="stat-label">Max</span><span class="stat-value">114.84</span></div><div class="stat-item"><span class="stat-label">Outliers</span><span class="stat-value">0.0</span></div></div>
+        </div>
+        <div class="column-profile">
+            <div class="column-name">category <span class="col-type-badge">text</span></div>
+            <div class="column-stats"><div class="stat-item"><span class="stat-label">Type</span><span class="stat-value">str</span></div><div class="stat-item"><span class="stat-label">Non-Null</span><span class="stat-value">100</span></div><div class="stat-item"><span class="stat-label">Missing</span><span class="stat-value">0.0</span></div><div class="stat-item"><span class="stat-label">Unique</span><span class="stat-value">3</span></div><div class="stat-item"><span class="stat-label">Min Length</span><span class="stat-value">1</span></div><div class="stat-item"><span class="stat-label">Max Length</span><span class="stat-value">1</span></div><div class="stat-item"><span class="stat-label">Avg Length</span><span class="stat-value">1.0</span></div></div>
+        </div>
+        <div class="column-profile">
+            <div class="column-name">active <span class="col-type-badge">text</span></div>
+            <div class="column-stats"><div class="stat-item"><span class="stat-label">Type</span><span class="stat-value">str</span></div><div class="stat-item"><span class="stat-label">Non-Null</span><span class="stat-value">100</span></div><div class="stat-item"><span class="stat-label">Missing</span><span class="stat-value">0.0</span></div><div class="stat-item"><span class="stat-label">Unique</span><span class="stat-value">2</span></div><div class="stat-item"><span class="stat-label">Min Length</span><span class="stat-value">4</span></div><div class="stat-item"><span class="stat-label">Max Length</span><span class="stat-value">5</span></div><div class="stat-item"><span class="stat-label">Avg Length</span><span class="stat-value">4.5</span></div></div>
+        </div>
+        <div class="column-profile">
+            <div class="column-name">revenue <span class="col-type-badge">numeric</span></div>
+            <div class="column-stats"><div class="stat-item"><span class="stat-label">Type</span><span class="stat-value">float64</span></div><div class="stat-item"><span class="stat-label">Non-Null</span><span class="stat-value">100</span></div><div class="stat-item"><span class="stat-label">Missing</span><span class="stat-value">0.0</span></div><div class="stat-item"><span class="stat-label">Unique</span><span class="stat-value">100</span></div><div class="stat-item"><span class="stat-label">Mean</span><span class="stat-value">526.85</span></div><div class="stat-item"><span class="stat-label">Std Dev</span><span class="stat-value">263.81</span></div><div class="stat-item"><span class="stat-label">Min</span><span class="stat-value">112.95</span></div><div class="stat-item"><span class="stat-label">Max</span><span class="stat-value">991.45</span></div><div class="stat-item"><span class="stat-label">Outliers</span><span class="stat-value">0.0</span></div></div>
+        </div>
+    </section>
+
+    <section class="section" id="visualizations">
+        <h2>Visualizations</h2>
+        
+        <div class="chart-container">
+            <div class="chart-title">Age Distribution</div>
+            <div id="chart_0"></div>
+        </div>
+        <div class="chart-container">
+            <div class="chart-title">Category Distribution</div>
+            <div id="chart_1"></div>
+        </div>
+        <div class="chart-container">
+            <div class="chart-title">Age vs Score</div>
+            <div id="chart_2"></div>
+        </div>
+    </section>
+
+    <section class="section" id="analysis-results">
+        <h2>Analysis Results</h2>
+        
+        <div class="column-profile">
+            <div class="column-name">Statistical Summary</div>
+            <table><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody><tr><td>mean_age</td><td>50.20</td></tr><tr><td>mean_score</td><td>75.39</td></tr><tr><td>total_revenue</td><td>52,685.41</td></tr></tbody></table>
+        </div>
+    </section>
+        
+    <footer>
+        <p>Generated by FastReports Data Analysis Pipeline</p>
+        <p class="timestamp">2026-05-17 04:28:39</p>
+    </footer>
+    </div>
+    <script>
+        window.addEventListener('DOMContentLoaded', function() {
+            Plotly.newPlot('chart_0', [{"nbinsx": 20, "x": {"dtype": "f8", "bdata": "AAAAAAAATEAAAAAAAEBRQAAAAAAAAEdAAAAAAAAAQEAAAAAAAABOQAAAAAAAAERAAAAAAAAAPEAAAAAAAAA8QAAAAAAAgERAAAAAAACAUUAAAAAAAIBKQAAAAAAAgExAAAAAAACAREAAAAAAAAA0QAAAAAAAgENAAAAAAACAUUAAAAAAAAAzQAAAAAAAgERAAAAAAACATkAAAAAAAIBHQAAAAAAAgEtAAAAAAAAAM0AAAAAAAEBTQAAAAAAAAENAAAAAAAAASUAAAAAAAAA9QAAAAAAAwFJAAAAAAACAQ0AAAAAAAIBTQAAAAAAAgE5AAAAAAAAARUAAAAAAAIBQQAAAAAAAAEZAAAAAAAAAU0AAAAAAAIBNQAAAAAAAgEZAAAAAAABAU0AAAAAAAIBAQAAAAAAAAEBAAAAAAADAU0AAAAAAAMBTQAAAAAAAAFBAAAAAAADAU0AAAAAAAABRQAAAAAAAgE5AAAAAAAAAUkAAAAAAAEBRQAAAAAAAgFJAAAAAAAAANEAAAAAAAABLQAAAAAAAAFFAAAAAAAAAOEAAAAAAAABDQAAAAAAAADpAAAAAAAAATEAAAAAAAIBBQAAAAAAAADVAAAAAAAAARUAAAAAAAEBTQAAAAAAAAD9AAAAAAADAUEAAAAAAAMBSQAAAAAAAADpAAAAAAACARUAAAAAAAIBRQAAAAAAAADNAAAAAAACAQkAAAAAAAIBGQAAAAAAAAFBAAAAAAABAU0AAAAAAAAA4QAAAAAAAgE5AAAAAAACAU0AAAAAAAAA5QAAAAAAAAFBAAAAAAAAASkAAAAAAAAA/QAAAAAAAAEFAAAAAAACASkAAAAAAAMBQQAAAAAAAgExAAAAAAAAANUAAAAAAAAAzQAAAAAAAwFNAAAAAAAAAN0AAAAAAAMBRQAAAAAAAgE1AAAAAAAAANUAAAAAAAMBRQAAAAAAAAEdAAAAAAACAQUAAAAAAAIBFQAAAAAAAgE5AAAAAAACASUA="}, "type": "histogram"}], Object.assign({}, {"template": {"data": {"histogram2dcontour": [{"type": "histogram2dcontour", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "choropleth": [{"type": "choropleth", "colorbar": {"outlinewidth": 0, "ticks": ""}}], "histogram2d": [{"type": "histogram2d", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "heatmap": [{"type": "heatmap", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "contourcarpet": [{"type": "contourcarpet", "colorbar": {"outlinewidth": 0, "ticks": ""}}], "contour": [{"type": "contour", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "surface": [{"type": "surface", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "mesh3d": [{"type": "mesh3d", "colorbar": {"outlinewidth": 0, "ticks": ""}}], "scatter": [{"fillpattern": {"fillmode": "overlay", "size": 10, "solidity": 0.2}, "type": "scatter"}], "parcoords": [{"type": "parcoords", "line": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scatterpolargl": [{"type": "scatterpolargl", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "bar": [{"error_x": {"color": "#2a3f5f"}, "error_y": {"color": "#2a3f5f"}, "marker": {"line": {"color": "#E5ECF6", "width": 0.5}, "pattern": {"fillmode": "overlay", "size": 10, "solidity": 0.2}}, "type": "bar"}], "scattergeo": [{"type": "scattergeo", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scatterpolar": [{"type": "scatterpolar", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "histogram": [{"marker": {"pattern": {"fillmode": "overlay", "size": 10, "solidity": 0.2}}, "type": "histogram"}], "scattergl": [{"type": "scattergl", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scatter3d": [{"type": "scatter3d", "line": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scattermap": [{"type": "scattermap", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scattermapbox": [{"type": "scattermapbox", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scatterternary": [{"type": "scatterternary", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scattercarpet": [{"type": "scattercarpet", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "carpet": [{"aaxis": {"endlinecolor": "#2a3f5f", "gridcolor": "white", "linecolor": "white", "minorgridcolor": "white", "startlinecolor": "#2a3f5f"}, "baxis": {"endlinecolor": "#2a3f5f", "gridcolor": "white", "linecolor": "white", "minorgridcolor": "white", "startlinecolor": "#2a3f5f"}, "type": "carpet"}], "table": [{"cells": {"fill": {"color": "#EBF0F8"}, "line": {"color": "white"}}, "header": {"fill": {"color": "#C8D4E3"}, "line": {"color": "white"}}, "type": "table"}], "barpolar": [{"marker": {"line": {"color": "#E5ECF6", "width": 0.5}, "pattern": {"fillmode": "overlay", "size": 10, "solidity": 0.2}}, "type": "barpolar"}], "pie": [{"automargin": true, "type": "pie"}]}, "layout": {"autotypenumbers": "strict", "colorway": ["#636efa", "#EF553B", "#00cc96", "#ab63fa", "#FFA15A", "#19d3f3", "#FF6692", "#B6E880", "#FF97FF", "#FECB52"], "font": {"color": "#2a3f5f"}, "hovermode": "closest", "hoverlabel": {"align": "left"}, "paper_bgcolor": "white", "plot_bgcolor": "#E5ECF6", "polar": {"bgcolor": "#E5ECF6", "angularaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "radialaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}}, "ternary": {"bgcolor": "#E5ECF6", "aaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "baxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "caxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}}, "coloraxis": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "colorscale": {"sequential": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "sequentialminus": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "diverging": [[0, "#8e0152"], [0.1, "#c51b7d"], [0.2, "#de77ae"], [0.3, "#f1b6da"], [0.4, "#fde0ef"], [0.5, "#f7f7f7"], [0.6, "#e6f5d0"], [0.7, "#b8e186"], [0.8, "#7fbc41"], [0.9, "#4d9221"], [1, "#276419"]]}, "xaxis": {"gridcolor": "white", "linecolor": "white", "ticks": "", "title": {"standoff": 15}, "zerolinecolor": "white", "automargin": true, "zerolinewidth": 2}, "yaxis": {"gridcolor": "white", "linecolor": "white", "ticks": "", "title": {"standoff": 15}, "zerolinecolor": "white", "automargin": true, "zerolinewidth": 2}, "scene": {"xaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white", "gridwidth": 2}, "yaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white", "gridwidth": 2}, "zaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white", "gridwidth": 2}}, "shapedefaults": {"line": {"color": "#2a3f5f"}}, "annotationdefaults": {"arrowcolor": "#2a3f5f", "arrowhead": 0, "arrowwidth": 1}, "geo": {"bgcolor": "white", "landcolor": "#E5ECF6", "subunitcolor": "white", "showland": true, "showlakes": true, "lakecolor": "white"}, "title": {"x": 0.05}, "mapbox": {"style": "light"}}}, "title": {"text": "Age Distribution"}, "xaxis": {"title": {"text": "Age"}}, "yaxis": {"title": {"text": "Count"}}}, {responsive: true}));
+            Plotly.newPlot('chart_1', [{"x": ["A", "C", "B"], "y": {"dtype": "i1", "bdata": "JCIe"}, "type": "bar"}], Object.assign({}, {"template": {"data": {"histogram2dcontour": [{"type": "histogram2dcontour", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "choropleth": [{"type": "choropleth", "colorbar": {"outlinewidth": 0, "ticks": ""}}], "histogram2d": [{"type": "histogram2d", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "heatmap": [{"type": "heatmap", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "contourcarpet": [{"type": "contourcarpet", "colorbar": {"outlinewidth": 0, "ticks": ""}}], "contour": [{"type": "contour", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "surface": [{"type": "surface", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "mesh3d": [{"type": "mesh3d", "colorbar": {"outlinewidth": 0, "ticks": ""}}], "scatter": [{"fillpattern": {"fillmode": "overlay", "size": 10, "solidity": 0.2}, "type": "scatter"}], "parcoords": [{"type": "parcoords", "line": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scatterpolargl": [{"type": "scatterpolargl", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "bar": [{"error_x": {"color": "#2a3f5f"}, "error_y": {"color": "#2a3f5f"}, "marker": {"line": {"color": "#E5ECF6", "width": 0.5}, "pattern": {"fillmode": "overlay", "size": 10, "solidity": 0.2}}, "type": "bar"}], "scattergeo": [{"type": "scattergeo", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scatterpolar": [{"type": "scatterpolar", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "histogram": [{"marker": {"pattern": {"fillmode": "overlay", "size": 10, "solidity": 0.2}}, "type": "histogram"}], "scattergl": [{"type": "scattergl", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scatter3d": [{"type": "scatter3d", "line": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scattermap": [{"type": "scattermap", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scattermapbox": [{"type": "scattermapbox", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scatterternary": [{"type": "scatterternary", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scattercarpet": [{"type": "scattercarpet", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "carpet": [{"aaxis": {"endlinecolor": "#2a3f5f", "gridcolor": "white", "linecolor": "white", "minorgridcolor": "white", "startlinecolor": "#2a3f5f"}, "baxis": {"endlinecolor": "#2a3f5f", "gridcolor": "white", "linecolor": "white", "minorgridcolor": "white", "startlinecolor": "#2a3f5f"}, "type": "carpet"}], "table": [{"cells": {"fill": {"color": "#EBF0F8"}, "line": {"color": "white"}}, "header": {"fill": {"color": "#C8D4E3"}, "line": {"color": "white"}}, "type": "table"}], "barpolar": [{"marker": {"line": {"color": "#E5ECF6", "width": 0.5}, "pattern": {"fillmode": "overlay", "size": 10, "solidity": 0.2}}, "type": "barpolar"}], "pie": [{"automargin": true, "type": "pie"}]}, "layout": {"autotypenumbers": "strict", "colorway": ["#636efa", "#EF553B", "#00cc96", "#ab63fa", "#FFA15A", "#19d3f3", "#FF6692", "#B6E880", "#FF97FF", "#FECB52"], "font": {"color": "#2a3f5f"}, "hovermode": "closest", "hoverlabel": {"align": "left"}, "paper_bgcolor": "white", "plot_bgcolor": "#E5ECF6", "polar": {"bgcolor": "#E5ECF6", "angularaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "radialaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}}, "ternary": {"bgcolor": "#E5ECF6", "aaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "baxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "caxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}}, "coloraxis": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "colorscale": {"sequential": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "sequentialminus": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "diverging": [[0, "#8e0152"], [0.1, "#c51b7d"], [0.2, "#de77ae"], [0.3, "#f1b6da"], [0.4, "#fde0ef"], [0.5, "#f7f7f7"], [0.6, "#e6f5d0"], [0.7, "#b8e186"], [0.8, "#7fbc41"], [0.9, "#4d9221"], [1, "#276419"]]}, "xaxis": {"gridcolor": "white", "linecolor": "white", "ticks": "", "title": {"standoff": 15}, "zerolinecolor": "white", "automargin": true, "zerolinewidth": 2}, "yaxis": {"gridcolor": "white", "linecolor": "white", "ticks": "", "title": {"standoff": 15}, "zerolinecolor": "white", "automargin": true, "zerolinewidth": 2}, "scene": {"xaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white", "gridwidth": 2}, "yaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white", "gridwidth": 2}, "zaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white", "gridwidth": 2}}, "shapedefaults": {"line": {"color": "#2a3f5f"}}, "annotationdefaults": {"arrowcolor": "#2a3f5f", "arrowhead": 0, "arrowwidth": 1}, "geo": {"bgcolor": "white", "landcolor": "#E5ECF6", "subunitcolor": "white", "showland": true, "showlakes": true, "lakecolor": "white"}, "title": {"x": 0.05}, "mapbox": {"style": "light"}}}, "title": {"text": "Category Distribution"}, "xaxis": {"title": {"text": "Category"}}, "yaxis": {"title": {"text": "Count"}}}, {responsive: true}));
+            Plotly.newPlot('chart_2', [{"mode": "markers", "x": {"dtype": "f8", "bdata": "AAAAAAAATEAAAAAAAEBRQAAAAAAAAEdAAAAAAAAAQEAAAAAAAABOQAAAAAAAAERAAAAAAAAAPEAAAAAAAAA8QAAAAAAAgERAAAAAAACAUUAAAAAAAIBKQAAAAAAAgExAAAAAAACAREAAAAAAAAA0QAAAAAAAgENAAAAAAACAUUAAAAAAAAAzQAAAAAAAgERAAAAAAACATkAAAAAAAIBHQAAAAAAAgEtAAAAAAAAAM0AAAAAAAEBTQAAAAAAAAENAAAAAAAAASUAAAAAAAAA9QAAAAAAAwFJAAAAAAACAQ0AAAAAAAIBTQAAAAAAAgE5AAAAAAAAARUAAAAAAAIBQQAAAAAAAAEZAAAAAAAAAU0AAAAAAAIBNQAAAAAAAgEZAAAAAAABAU0AAAAAAAIBAQAAAAAAAAEBAAAAAAADAU0AAAAAAAMBTQAAAAAAAAFBAAAAAAADAU0AAAAAAAABRQAAAAAAAgE5AAAAAAAAAUkAAAAAAAEBRQAAAAAAAgFJAAAAAAAAANEAAAAAAAABLQAAAAAAAAFFAAAAAAAAAOEAAAAAAAABDQAAAAAAAADpAAAAAAAAATEAAAAAAAIBBQAAAAAAAADVAAAAAAAAARUAAAAAAAEBTQAAAAAAAAD9AAAAAAADAUEAAAAAAAMBSQAAAAAAAADpAAAAAAACARUAAAAAAAIBRQAAAAAAAADNAAAAAAACAQkAAAAAAAIBGQAAAAAAAAFBAAAAAAABAU0AAAAAAAAA4QAAAAAAAgE5AAAAAAACAU0AAAAAAAAA5QAAAAAAAAFBAAAAAAAAASkAAAAAAAAA/QAAAAAAAAEFAAAAAAACASkAAAAAAAMBQQAAAAAAAgExAAAAAAAAANUAAAAAAAAAzQAAAAAAAwFNAAAAAAAAAN0AAAAAAAMBRQAAAAAAAgE1AAAAAAAAANUAAAAAAAMBRQAAAAAAAAEdAAAAAAACAQUAAAAAAAIBFQAAAAAAAgE5AAAAAAACASUA="}, "y": {"dtype": "f8", "bdata": "ii0ZhnZeVUDiMVl/PBtSQPi58aYzsk5AkkOVqBQ1V0BFivpfHLJVQAZ5PwrFtVxApIdJVPK8U0D3fWKrGehYQAnCwzZielRAm0xpjXwSU0Bw6/DL4SxKQE1N9XGkdFVA7dNAPaIsT0CzjPslNdNQQMKDOmU0llJAHFhzcahmU0B+58QKyztVQGrywy56p1NA43nk6oUeUkA5btWKLR5XQOffXwwV1FFAW+RY5Ty6T0Bmqox5r0tXQJ4fuCwoYFdAmB+AMZ+xSUBVRLlQbyRVQG20QTK1KkZAZixin7PCVkBgeHDjLH9OQO8bEwHXsFVAgj8kIrhxUEAosmulk/9TQNvm3fcFJUtASy65C22yUUByIy1Pk4ZSQGEGmRC6WlZAvRrBdYJ6WUBNuQNDdu1UQMJvAJO+3VNAZS9UiQTKTUCoc2x3S9xKQNoqqTe5dlNA8Cdz3FJCU0ChfIYdxAdVQJ++AjXIZFVAJ69+h3waVECTifDxa39KQCRecZ7sGFZAejq6AfRaUkAq6JAdvFVOQHvXhXHTMVFATG/C4WoCS0DLiiPErnVRQMRkpSPBkFVA+ce/1XqFUUDkSwpTuwlPQJdbAIEkyFFANUS5c4R6VEC2miHXK2FLQPuAM1hh201A2pknh+45U0Ab3d5rESFMQE3ZCJ1PC1pAVlA+CMwsUkDReJOjlbJOQKi77hWuXk9A/oY9xTPwUEBbWy/89pxQQBfEK+4g0EVAdoRy3zB9V0Dmz3nQIrFSQMi9+Pa3pVJAaSEomCjRVUALr6jPKJdNQELIwA0D0E9AQLpGeB53VEBwnEJzMoJSQOb9pjIbC1RAyeOIvB1zUkCTkDlrRthRQOzSIsQsIFhAv2E5dim/VkD0mh3oYcJCQGniFIwdTVhAbfM0H2HYWkAJr5bagV5XQEBPcJ0/8lFA/Hx+oV8qUEC0lCFEuHpVQARzlYOxbVBAccQE1+kVVEDVJmuO/qpSQP1oWRNUUVdAszHDyx5KUUA="}, "type": "scatter"}], Object.assign({}, {"template": {"data": {"histogram2dcontour": [{"type": "histogram2dcontour", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "choropleth": [{"type": "choropleth", "colorbar": {"outlinewidth": 0, "ticks": ""}}], "histogram2d": [{"type": "histogram2d", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "heatmap": [{"type": "heatmap", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "contourcarpet": [{"type": "contourcarpet", "colorbar": {"outlinewidth": 0, "ticks": ""}}], "contour": [{"type": "contour", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "surface": [{"type": "surface", "colorbar": {"outlinewidth": 0, "ticks": ""}, "colorscale": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]]}], "mesh3d": [{"type": "mesh3d", "colorbar": {"outlinewidth": 0, "ticks": ""}}], "scatter": [{"fillpattern": {"fillmode": "overlay", "size": 10, "solidity": 0.2}, "type": "scatter"}], "parcoords": [{"type": "parcoords", "line": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scatterpolargl": [{"type": "scatterpolargl", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "bar": [{"error_x": {"color": "#2a3f5f"}, "error_y": {"color": "#2a3f5f"}, "marker": {"line": {"color": "#E5ECF6", "width": 0.5}, "pattern": {"fillmode": "overlay", "size": 10, "solidity": 0.2}}, "type": "bar"}], "scattergeo": [{"type": "scattergeo", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scatterpolar": [{"type": "scatterpolar", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "histogram": [{"marker": {"pattern": {"fillmode": "overlay", "size": 10, "solidity": 0.2}}, "type": "histogram"}], "scattergl": [{"type": "scattergl", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scatter3d": [{"type": "scatter3d", "line": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scattermap": [{"type": "scattermap", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scattermapbox": [{"type": "scattermapbox", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scatterternary": [{"type": "scatterternary", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "scattercarpet": [{"type": "scattercarpet", "marker": {"colorbar": {"outlinewidth": 0, "ticks": ""}}}], "carpet": [{"aaxis": {"endlinecolor": "#2a3f5f", "gridcolor": "white", "linecolor": "white", "minorgridcolor": "white", "startlinecolor": "#2a3f5f"}, "baxis": {"endlinecolor": "#2a3f5f", "gridcolor": "white", "linecolor": "white", "minorgridcolor": "white", "startlinecolor": "#2a3f5f"}, "type": "carpet"}], "table": [{"cells": {"fill": {"color": "#EBF0F8"}, "line": {"color": "white"}}, "header": {"fill": {"color": "#C8D4E3"}, "line": {"color": "white"}}, "type": "table"}], "barpolar": [{"marker": {"line": {"color": "#E5ECF6", "width": 0.5}, "pattern": {"fillmode": "overlay", "size": 10, "solidity": 0.2}}, "type": "barpolar"}], "pie": [{"automargin": true, "type": "pie"}]}, "layout": {"autotypenumbers": "strict", "colorway": ["#636efa", "#EF553B", "#00cc96", "#ab63fa", "#FFA15A", "#19d3f3", "#FF6692", "#B6E880", "#FF97FF", "#FECB52"], "font": {"color": "#2a3f5f"}, "hovermode": "closest", "hoverlabel": {"align": "left"}, "paper_bgcolor": "white", "plot_bgcolor": "#E5ECF6", "polar": {"bgcolor": "#E5ECF6", "angularaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "radialaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}}, "ternary": {"bgcolor": "#E5ECF6", "aaxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "baxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}, "caxis": {"gridcolor": "white", "linecolor": "white", "ticks": ""}}, "coloraxis": {"colorbar": {"outlinewidth": 0, "ticks": ""}}, "colorscale": {"sequential": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "sequentialminus": [[0.0, "#0d0887"], [0.1111111111111111, "#46039f"], [0.2222222222222222, "#7201a8"], [0.3333333333333333, "#9c179e"], [0.4444444444444444, "#bd3786"], [0.5555555555555556, "#d8576b"], [0.6666666666666666, "#ed7953"], [0.7777777777777778, "#fb9f3a"], [0.8888888888888888, "#fdca26"], [1.0, "#f0f921"]], "diverging": [[0, "#8e0152"], [0.1, "#c51b7d"], [0.2, "#de77ae"], [0.3, "#f1b6da"], [0.4, "#fde0ef"], [0.5, "#f7f7f7"], [0.6, "#e6f5d0"], [0.7, "#b8e186"], [0.8, "#7fbc41"], [0.9, "#4d9221"], [1, "#276419"]]}, "xaxis": {"gridcolor": "white", "linecolor": "white", "ticks": "", "title": {"standoff": 15}, "zerolinecolor": "white", "automargin": true, "zerolinewidth": 2}, "yaxis": {"gridcolor": "white", "linecolor": "white", "ticks": "", "title": {"standoff": 15}, "zerolinecolor": "white", "automargin": true, "zerolinewidth": 2}, "scene": {"xaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white", "gridwidth": 2}, "yaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white", "gridwidth": 2}, "zaxis": {"backgroundcolor": "#E5ECF6", "gridcolor": "white", "linecolor": "white", "showbackground": true, "ticks": "", "zerolinecolor": "white", "gridwidth": 2}}, "shapedefaults": {"line": {"color": "#2a3f5f"}}, "annotationdefaults": {"arrowcolor": "#2a3f5f", "arrowhead": 0, "arrowwidth": 1}, "geo": {"bgcolor": "white", "landcolor": "#E5ECF6", "subunitcolor": "white", "showland": true, "showlakes": true, "lakecolor": "white"}, "title": {"x": 0.05}, "mapbox": {"style": "light"}}}, "title": {"text": "Age vs Score"}, "xaxis": {"title": {"text": "Age"}}, "yaxis": {"title": {"text": "Score"}}}, {responsive: true}));
+            window.addEventListener('resize', function() {
+                document.querySelectorAll('[id^="chart_"]').forEach(function(el) {
+                    Plotly.Plots.resize(el);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

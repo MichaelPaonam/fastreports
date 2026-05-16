@@ -1,0 +1,42 @@
+# FastReports - Python Dependencies
+
+# Core Data Processing
+pandas>=2.0.0
+numpy>=1.24.0
+openpyxl>=3.1.0  # Excel file support
+
+# Data Analysis & Statistics
+scikit-learn>=1.3.0
+scipy>=1.11.0
+
+# Visualization
+plotly>=5.17.0
+kaleido>=0.2.1  # Static image export for Plotly
+
+# Configuration & Utilities
+pyyaml>=6.0
+python-dateutil>=2.8.2
+
+# Text Processing (for survey analysis)
+nltk>=3.8.1
+textblob>=0.17.1
+
+# File Handling
+chardet>=5.2.0  # Character encoding detection
+
+# API Server
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.5.0
+
+# Query Engine
+duckdb>=0.9.0
+
+# Testing
+pytest>=7.4.0
+pytest-cov>=4.1.0
+
+# Development
+black>=23.7.0  # Code formatting
+flake8>=6.1.0  # Linting
+mypy>=1.5.0  # Type checking

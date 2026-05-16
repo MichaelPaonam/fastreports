@@ -1,0 +1,355 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e5]:
+        - heading "FastReports Dashboard" [level=1] [ref=e6]
+        - paragraph [ref=e7]: Interactive data analysis and visualization
+    - generic [ref=e8]:
+      - generic [ref=e9]:
+        - generic [ref=e10]: "Select Dataset:"
+        - combobox [ref=e11]:
+          - option "Choose a dataset..."
+          - option "Yelp Reviews"
+          - option "Purchase Log"
+          - option "Survey Answers"
+          - option "Layoffs" [selected]
+          - option "Laliga 25 26"
+          - option "Laliga 23 24"
+          - option "Laliga 24 25"
+          - option "Laliga 22 23"
+        - button "Load Demo Data" [ref=e12] [cursor=pointer]
+      - generic [ref=e19]:
+        - generic [ref=e20]:
+          - generic [ref=e21]: Total Rows
+          - generic [ref=e22]: 2,361
+        - generic [ref=e23]:
+          - generic [ref=e24]: Filtered Rows
+          - generic [ref=e25]: 2,361
+        - generic [ref=e26]:
+          - generic [ref=e27]: Columns
+          - generic [ref=e28]: "9"
+        - generic [ref=e29]:
+          - generic [ref=e30]: Quality Score
+          - generic [ref=e31]: "100"
+      - generic [ref=e32]:
+        - generic [ref=e33]:
+          - heading "Filters & Query" [level=3] [ref=e34]
+          - generic [ref=e35]:
+            - button "Clear All" [disabled] [ref=e36]
+            - button "Show SQL Query" [ref=e37] [cursor=pointer]
+        - generic [ref=e38]:
+          - generic [ref=e39]:
+            - generic [ref=e40]: company
+            - textbox "Filter company..." [ref=e41]
+          - generic [ref=e42]:
+            - generic [ref=e43]: location
+            - textbox "Filter location..." [ref=e44]
+          - generic [ref=e45]:
+            - generic [ref=e46]: industry
+            - combobox [ref=e47]:
+              - option "All" [selected]
+              - option "Other"
+              - option "Media"
+              - option "Retail"
+              - option "Education"
+              - option "Real Estate"
+              - option "Transportation"
+              - option "Marketing"
+              - option "Healthcare"
+              - option "Security"
+              - option "Food"
+              - option "Fitness"
+              - option "Consumer"
+              - option "Logistics"
+              - option "HR"
+              - option "Support"
+              - option "Travel"
+              - option "Crypto"
+              - option "Finance"
+              - option "Data"
+              - option "Sales"
+              - option "Infrastructure"
+              - option "Hardware"
+              - option "Product"
+              - option "Construction"
+              - option "Legal"
+              - option "Energy"
+              - option "Manufacturing"
+              - option "Recruiting"
+              - option "Aerospace"
+              - option "Crypto Currency"
+              - option "Fin-Tech"
+              - option "CryptoCurrency"
+          - generic [ref=e48]:
+            - generic [ref=e49]: total_laid_off
+            - generic [ref=e50]:
+              - spinbutton [ref=e51]
+              - spinbutton [ref=e52]
+          - generic [ref=e53]:
+            - generic [ref=e54]: percentage_laid_off
+            - generic [ref=e55]:
+              - spinbutton [ref=e56]
+              - spinbutton [ref=e57]
+          - generic [ref=e58]:
+            - generic [ref=e59]: date
+            - textbox "Filter date..." [ref=e60]
+          - generic [ref=e61]:
+            - generic [ref=e62]: stage
+            - combobox [ref=e63]:
+              - option "All" [selected]
+              - option "Post-IPO"
+              - option "Series B"
+              - option "Unknown"
+              - option "Acquired"
+              - option "Series F"
+              - option "Series E"
+              - option "Series A"
+              - option "Subsidiary"
+              - option "Series C"
+              - option "Series G"
+              - option "Series D"
+              - option "Seed"
+              - option "Series H"
+              - option "Private Equity"
+              - option "Series J"
+              - option "Series I"
+          - generic [ref=e64]:
+            - generic [ref=e65]: country
+            - textbox "Filter country..." [ref=e66]
+          - generic [ref=e67]:
+            - generic [ref=e68]: funds_raised_millions
+            - generic [ref=e69]:
+              - spinbutton [ref=e70]
+              - spinbutton [ref=e71]
+      - generic [ref=e72]:
+        - button "📊 Data Table" [ref=e73] [cursor=pointer]
+        - button "📈 Visualizations" [active] [ref=e74] [cursor=pointer]
+      - generic [ref=e619]:
+        - generic [ref=e620]:
+          - generic [ref=e621]:
+            - generic [ref=e622]: Chart Type
+            - combobox [ref=e623]:
+              - option "Bar Chart" [selected]
+              - option "Line Chart"
+              - option "Scatter Plot"
+              - option "Pie Chart"
+              - option "Histogram"
+              - option "Box Plot"
+          - generic [ref=e624]:
+            - generic [ref=e625]: X-Axis
+            - combobox [ref=e626]:
+              - option "company" [selected]
+              - option "location"
+              - option "industry"
+              - option "total_laid_off"
+              - option "percentage_laid_off"
+              - option "date"
+              - option "stage"
+              - option "country"
+              - option "funds_raised_millions"
+          - generic [ref=e627]:
+            - generic [ref=e628]: Y-Axis
+            - combobox [ref=e629]:
+              - option "Count"
+              - option "total_laid_off"
+              - option "percentage_laid_off"
+              - option "funds_raised_millions"
+          - generic [ref=e630]:
+            - generic [ref=e631]: Group By
+            - combobox [ref=e632]:
+              - option "None" [selected]
+              - option "company"
+              - option "location"
+              - option "industry"
+              - option "total_laid_off"
+              - option "percentage_laid_off"
+              - option "date"
+              - option "stage"
+              - option "country"
+              - option "funds_raised_millions"
+        - generic [ref=e636]:
+          - img:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - generic: Atlassian
+                  - generic:
+                    - generic: Electronic Arts
+                  - generic:
+                    - generic: Vibrent Health
+                  - generic:
+                    - generic: The RealReal
+                  - generic:
+                    - generic: Magic Eden
+                  - generic:
+                    - generic: Beam Benefits
+                  - generic:
+                    - generic: Finder
+                  - generic:
+                    - generic: Bustle Digital Group
+                  - generic:
+                    - generic: Impossible Foods copy
+                  - generic:
+                    - generic: Quora
+                  - generic:
+                    - generic: Inmobi
+                  - generic:
+                    - generic: Hubilo
+                  - generic:
+                    - generic: Clue
+                  - generic:
+                    - generic: RateGenius
+                  - generic:
+                    - generic: Cashfree Payments
+                  - generic:
+                    - generic: ForeScout
+                  - generic:
+                    - generic: SuperRare
+                  - generic:
+                    - generic: ByteDance
+                  - generic:
+                    - generic: SonderMind
+                  - generic:
+                    - generic: Share Now
+                  - generic:
+                    - generic: Relativity
+                  - generic:
+                    - generic: Route
+                  - generic:
+                    - generic: Etermax
+                  - generic:
+                    - generic: NCX
+                  - generic:
+                    - generic: Capitolis
+                  - generic:
+                    - generic: Hopin
+                  - generic:
+                    - generic: Intercom
+                  - generic:
+                    - generic: Root Insurance
+                  - generic:
+                    - generic: Exodus
+                  - generic:
+                    - generic: Drop
+                  - generic:
+                    - generic: Antidote Health
+                  - generic:
+                    - generic: Playdots
+                  - generic:
+                    - generic: TwinStrand
+                  - generic:
+                    - generic: Kitty Hawk
+                  - generic:
+                    - generic: Sama
+                  - generic:
+                    - generic: Shopify
+                  - generic:
+                    - generic: Packable
+                  - generic:
+                    - generic: ThredUp
+                  - generic:
+                    - generic: Sweetgreen
+                  - generic:
+                    - generic: The Predictive Index
+                  - generic:
+                    - generic: Tapas Media
+                  - generic:
+                    - generic: Mural
+                  - generic:
+                    - generic: Alto Pharmacy
+                  - generic:
+                    - generic: Anodot
+                  - generic:
+                    - generic: Finleap Connect
+                  - generic:
+                    - generic: Banxa
+                  - generic:
+                    - generic: Aqgromalin
+                  - generic:
+                    - generic: Berlin Brands Group
+                  - generic:
+                    - generic: Eruditus
+                  - generic:
+                    - generic: BookClub
+                  - generic:
+                    - generic: Tripwire
+                  - generic:
+                    - generic: Rasa
+                  - generic:
+                    - generic: Katerra
+                  - generic:
+                    - generic: Rubica
+                  - generic:
+                    - generic: Mapify
+                  - generic:
+                    - generic: Sharethrough
+                  - generic:
+                    - generic: Builder
+                  - generic:
+                    - generic: Agoda
+                  - generic:
+                    - generic: N26
+                  - generic:
+                    - generic: Trivago
+                  - generic:
+                    - generic: Stoqo
+                  - generic:
+                    - generic: Kueski
+                  - generic:
+                    - generic: Tulip Retail
+                  - generic:
+                    - generic: LoopMe
+                  - generic:
+                    - generic: MediaMath
+                  - generic:
+                    - generic: Tripbam
+                  - generic:
+                    - generic: PatientPop
+                  - generic:
+                    - generic: DialSource
+                  - generic:
+                    - generic: DISCO
+                  - generic:
+                    - generic: Clutter
+                  - generic:
+                    - generic: Panda Squad
+                - generic:
+                  - generic:
+                    - generic: Sydney
+                  - generic:
+                    - generic: Washington D.C.
+                  - generic:
+                    - generic: New Delhi
+                  - generic:
+                    - generic: Calgary
+                  - generic:
+                    - generic: Raleigh
+                  - generic:
+                    - generic: Copenhagen
+                  - generic:
+                    - generic: Porto Alegre
+                  - generic:
+                    - generic: Toulouse
+          - img:
+            - generic:
+              - generic:
+                - generic: location by company
+              - generic:
+                - generic: company
+              - generic:
+                - generic: location
+          - generic [ref=e650]:
+            - img [ref=e653] [cursor=pointer]
+            - generic [ref=e655]:
+              - img [ref=e657] [cursor=pointer]
+              - img [ref=e660] [cursor=pointer]
+              - img [ref=e663] [cursor=pointer]
+              - img [ref=e666] [cursor=pointer]
+            - generic [ref=e668]:
+              - img [ref=e670] [cursor=pointer]
+              - img [ref=e673] [cursor=pointer]
+              - img [ref=e676] [cursor=pointer]
+              - img [ref=e679] [cursor=pointer]
+          - img
+  - img [ref=e681]

@@ -1,0 +1,14 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - heading "FastReports Dashboard" [level=1] [ref=e6]
+      - paragraph [ref=e7]: Interactive data analysis and visualization
+  - generic [ref=e8]:
+    - generic [ref=e9]:
+      - generic [ref=e10]: "Select Dataset:"
+      - combobox [ref=e11]:
+        - option "Choose a dataset..." [selected]
+      - button "Load Demo Data" [ref=e12] [cursor=pointer]
+    - generic [ref=e13]:
+      - heading "Welcome to FastReports Dashboard" [level=2] [ref=e14]
+      - paragraph [ref=e15]: Select a dataset from the dropdown above or load demo data to get started.

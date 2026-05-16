@@ -1,0 +1,20 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - heading "FastReports Dashboard" [level=1] [ref=e6]
+      - paragraph [ref=e7]: Interactive data analysis and visualization
+  - generic [ref=e8]:
+    - generic [ref=e9]:
+      - generic [ref=e10]: "Select Dataset:"
+      - combobox [disabled] [ref=e11]:
+        - option "Choose a dataset..." [selected]
+        - option "Yelp Reviews"
+        - option "Purchase Log"
+        - option "Survey Answers"
+        - option "Layoffs"
+        - option "Laliga 25 26"
+        - option "Laliga 23 24"
+        - option "Laliga 24 25"
+        - option "Laliga 22 23"
+      - button "Load Demo Data" [disabled] [ref=e12]
+    - paragraph [ref=e18]: Loading data...

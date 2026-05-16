@@ -54,8 +54,45 @@ FastReports demonstrates meaningful IBM Bob integration by using AI assistance i
 - **Smart Recommendations**: AI-driven visualization suggestions
 - **Pipeline Orchestration**: End-to-end workflow management
 - **Bob Session Management**: Complete interaction tracking
+- **REST API Backend**: FastAPI server with DuckDB query engine
+- **Interactive Dashboard**: Preact-based web UI with real-time filtering
 
 ## 🚀 Quick Start
+
+### Option 1: Full Stack (API + Dashboard)
+
+```bash
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Install dashboard dependencies
+cd dashboard && npm install && cd ..
+
+# Start both API server and dashboard
+chmod +x start_all.sh
+./start_all.sh
+
+# Access the dashboard at http://localhost:3000
+# API documentation at http://localhost:8000/docs
+```
+
+### Option 2: API Server Only
+
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Start API server
+chmod +x start_server.sh
+./start_server.sh
+
+# Or on Windows
+start_server.bat
+
+# API available at http://localhost:8000
+```
+
+### Option 3: Command-Line Pipeline
 
 ### Prerequisites
 
@@ -159,35 +196,27 @@ fastreports/
 
 ### Pipeline Flow
 
-```
-┌─────────────────┐
-│ Data Ingestion  │ → Load and validate data
-└────────┬────────┘
-         ↓
-┌─────────────────┐
-│ Data Profiling  │ → Analyze characteristics
-└────────┬────────┘
-         ↓
-┌─────────────────┐
-│ Quality Check   │ → Identify issues, score quality
-└────────┬────────┘
-         ↓
-┌─────────────────┐
-│ Data Cleaning   │ → Apply transformations (optional)
-└────────┬────────┘
-         ↓
-┌─────────────────┐
-│ Statistical     │ → Comprehensive analysis
-│ Analysis        │
-└────────┬────────┘
-         ↓
-┌─────────────────┐
-│ EDA Report      │ → Generate insights
-└────────┬────────┘
-         ↓
-┌─────────────────┐
-│ Visualization   │ → Create interactive charts
-└─────────────────┘
+```mermaid
+graph TD
+    A[Data Ingestion] -->|Load and validate data| B[Data Profiling]
+    B -->|Analyze characteristics| C[Quality Check]
+    C -->|Identify issues, score quality| D{Quality Score}
+    D -->|Score < 70| E[Data Cleaning]
+    D -->|Score >= 70| F[Statistical Analysis]
+    E -->|Apply transformations| F
+    F -->|Comprehensive analysis| G[EDA Report]
+    G -->|Generate insights| H[Visualization]
+    H -->|Create interactive charts| I[Final Report]
+    
+    style A fill:#e1f5ff,stroke:#0288d1,stroke-width:2px
+    style B fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style C fill:#fce4ec,stroke:#c2185b,stroke-width:2px
+    style D fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    style E fill:#fff9c4,stroke:#f9a825,stroke-width:2px
+    style F fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style G fill:#e0f2f1,stroke:#00796b,stroke-width:2px
+    style H fill:#e8eaf6,stroke:#3f51b5,stroke-width:2px
+    style I fill:#e0f7fa,stroke:#0097a7,stroke-width:2px
 ```
 
 ## 🤖 IBM Bob Integration
@@ -385,12 +414,35 @@ python main.py --auto-clean
 ls -la bob_sessions/
 ```
 
+## 🌐 API & Dashboard
+
+### REST API
+
+The FastAPI backend provides:
+- **GET /api/datasets**: List available datasets
+- **GET /api/data**: Load dataset with pagination
+- **POST /api/query**: Execute SQL queries with DuckDB
+- **GET /api/profile**: Get detailed dataset profiling
+
+See [API_DOCUMENTATION.md](API_DOCUMENTATION.md) for complete API reference.
+
+### Interactive Dashboard
+
+The Preact-based dashboard offers:
+- Real-time data filtering and search
+- SQL query builder with DuckDB
+- Interactive Plotly visualizations
+- Multiple chart types (bar, line, scatter, pie, histogram, box)
+- CSV export functionality
+- Responsive design
+
+**Access**: http://localhost:3000 (when running `start_all.sh`)
+
 ## 🚧 Known Limitations
 
 1. **HTML Report Generator**: Not yet implemented
-2. **Preact Dashboard**: Optional feature, not implemented
-3. **Large Files**: Memory constraints for files >1GB
-4. **Real-time Bob API**: Uses simulated interactions for demo
+2. **Large Files**: Memory constraints for files >1GB
+3. **Real-time Bob API**: Uses simulated interactions for demo
 
 ## 🔮 Future Enhancements
 
@@ -401,14 +453,15 @@ ls -la bob_sessions/
 
 ### Medium Priority
 - User checkpoint system for approvals
-- Real-time progress tracking
 - Domain-specific analyzers (time series, text, transactions)
+- Authentication and authorization for API
+- WebSocket support for real-time updates
 
 ### Low Priority
-- Interactive Preact dashboard
-- Cloud deployment
-- API endpoints
-- Performance optimizations
+- Cloud deployment (AWS, Azure, GCP)
+- Performance optimizations and caching
+- Export to PDF and PowerPoint
+- Advanced ML-based anomaly detection
 
 ## 📚 Documentation
 
@@ -416,6 +469,7 @@ ls -la bob_sessions/
 - **IMPLEMENTATION_PLAN.md**: Phase-by-phase implementation guide
 - **IMPLEMENTATION_SUMMARY.md**: What was built and how
 - **DATA_CLEANING_STRATEGIES.md**: Cleaning approach documentation
+- **API_DOCUMENTATION.md**: Complete API reference and examples
 
 ## 🤝 Contributing
 
