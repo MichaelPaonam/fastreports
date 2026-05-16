@@ -65,6 +65,7 @@ class DataTransformer:
         return {
             'by_issue_type': by_issue,
             'execution_order': [
+                'irrelevant_columns',  # Remove irrelevant columns first
                 'data_types',
                 'inconsistencies',
                 'missing_values',
@@ -105,6 +106,8 @@ class DataTransformer:
                 df = self._convert_to_datetime(df, strategy)
             elif strategy.strategy == 'cap_values':
                 df = self._cap_values(df, strategy)
+            elif strategy.strategy == 'drop_column':
+                df = self._drop_column(df, strategy)
             else:
                 self.logger.warning(f"Unknown strategy: {strategy.strategy}")
             
@@ -214,6 +217,17 @@ class DataTransformer:
             df[col] = df[col].clip(lower=min_value)
         if max_value is not None:
             df[col] = df[col].clip(upper=max_value)
+        
+        return df
+    
+    def _drop_column(self, df: pd.DataFrame, strategy: CleaningStrategy) -> pd.DataFrame:
+        """Drop irrelevant column."""
+        col = strategy.column
+        reason = strategy.parameters.get('reason', 'irrelevant')
+        
+        if col in df.columns:
+            df = df.drop(columns=[col])
+            self.logger.info(f"Dropped column '{col}' (reason: {reason})")
         
         return df
     

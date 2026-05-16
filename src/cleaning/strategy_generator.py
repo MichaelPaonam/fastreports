@@ -81,6 +81,8 @@ class StrategyGenerator:
             strategies.extend(self._strategy_for_data_types(df, affected_columns))
         elif category == 'value_ranges':
             strategies.extend(self._strategy_for_value_ranges(df, affected_columns))
+        elif category == 'irrelevant_columns':
+            strategies.extend(self._strategy_for_irrelevant_columns(df, affected_columns))
         
         return strategies
     
@@ -251,7 +253,7 @@ class StrategyGenerator:
         
         return strategies
     
-    def _strategy_for_value_ranges(self, df: pd.DataFrame, 
+    def _strategy_for_value_ranges(self, df: pd.DataFrame,
                                   columns: List[str]) -> List[CleaningStrategy]:
         """Generate strategies for invalid value ranges."""
         strategies = []
@@ -276,6 +278,44 @@ class StrategyGenerator:
                     issue_type='value_ranges',
                     strategy='cap_values',
                     parameters={'min_value': 0, 'max_value': None}
+                ))
+        
+        return strategies
+    
+    def _strategy_for_irrelevant_columns(self, df: pd.DataFrame,
+                                        columns: List[str]) -> List[CleaningStrategy]:
+        """Generate strategies for irrelevant columns."""
+        strategies = []
+        
+        for col in columns:
+            if col not in df.columns:
+                continue
+            
+            # Check if column is completely empty
+            if df[col].isnull().all():
+                strategies.append(CleaningStrategy(
+                    column=col,
+                    issue_type='irrelevant_columns',
+                    strategy='drop_column',
+                    parameters={'reason': 'completely_empty'}
+                ))
+            
+            # Check if column has only one unique value
+            elif df[col].nunique() == 1:
+                strategies.append(CleaningStrategy(
+                    column=col,
+                    issue_type='irrelevant_columns',
+                    strategy='drop_column',
+                    parameters={'reason': 'constant_value'}
+                ))
+            
+            # Check if column has >95% null values
+            elif df[col].isnull().sum() / len(df) > 0.95:
+                strategies.append(CleaningStrategy(
+                    column=col,
+                    issue_type='irrelevant_columns',
+                    strategy='drop_column',
+                    parameters={'reason': 'mostly_null'}
                 ))
         
         return strategies
@@ -311,6 +351,7 @@ class StrategyGenerator:
             'by_column': by_column,
             'by_issue_type': by_issue,
             'execution_order': [
+                'irrelevant_columns',  # Remove irrelevant columns first
                 'data_types',
                 'inconsistencies',
                 'missing_values',

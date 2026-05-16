@@ -72,6 +72,7 @@ class QualityChecker:
         self._check_inconsistencies(df)
         self._check_value_ranges(df)
         self._check_text_quality(df)
+        self._check_irrelevant_columns(df)
         
         # Categorize issues by severity
         critical_issues = [i for i in self.issues if i.severity == IssueSeverity.CRITICAL]
@@ -334,6 +335,39 @@ class QualityChecker:
                         affected_columns=[col],
                         count=int(single_char)
                     ))
+    
+    def _check_irrelevant_columns(self, df: pd.DataFrame):
+        """Check for potentially irrelevant columns."""
+        for col in df.columns:
+            # Check for columns with all null values
+            if df[col].isnull().all():
+                self.issues.append(QualityIssue(
+                    severity=IssueSeverity.CRITICAL,
+                    category="irrelevant_columns",
+                    description=f"Column is completely empty (100% null)",
+                    affected_columns=[col],
+                    count=len(df)
+                ))
+            
+            # Check for columns with single unique value (constant columns)
+            elif df[col].nunique() == 1:
+                self.issues.append(QualityIssue(
+                    severity=IssueSeverity.WARNING,
+                    category="irrelevant_columns",
+                    description=f"Column has only one unique value (constant)",
+                    affected_columns=[col],
+                    count=1
+                ))
+            
+            # Check for columns with very high null percentage (>95%)
+            elif df[col].isnull().sum() / len(df) > 0.95:
+                self.issues.append(QualityIssue(
+                    severity=IssueSeverity.WARNING,
+                    category="irrelevant_columns",
+                    description=f"Column has >95% null values",
+                    affected_columns=[col],
+                    count=int(df[col].isnull().sum())
+                ))
     
     def _calculate_quality_score(self, df: pd.DataFrame, critical_count: int, warning_count: int) -> int:
         """Calculate overall quality score (0-100)."""
