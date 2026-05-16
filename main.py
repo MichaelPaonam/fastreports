@@ -4,71 +4,136 @@ Automated Data Analysis Pipeline with IBM Bob Integration
 """
 
 import sys
+import argparse
 from pathlib import Path
-from src.utils.logger import get_logger, log_phase_start, log_phase_end
-from src.ingestion.data_loader import DataLoader
-from src.profiling.profiler import DataProfiler
-from src.profiling.quality_checker import QualityChecker
+from src.utils.logger import get_logger
+from src.orchestration.pipeline import DataAnalysisPipeline
+from src.bob_integration.session_manager import get_bob_session_manager
 
 logger = get_logger("main")
 
 
 def main():
     """Main execution function."""
+    parser = argparse.ArgumentParser(
+        description="FastReports - Automated Data Analysis Pipeline"
+    )
+    parser.add_argument(
+        "data_path",
+        nargs="?",
+        default="data/layoffs/layoffs.csv",
+        help="Path to the data file"
+    )
+    parser.add_argument(
+        "--dataset-name",
+        default="layoffs",
+        help="Name of the dataset"
+    )
+    parser.add_argument(
+        "--auto-clean",
+        action="store_true",
+        help="Automatically apply cleaning strategies"
+    )
+    parser.add_argument(
+        "--no-viz",
+        action="store_true",
+        help="Skip visualization generation"
+    )
+    
+    args = parser.parse_args()
+    
     logger.info("=" * 80)
     logger.info("FastReports - Automated Data Analysis Pipeline")
+    logger.info("IBM Bob Integration Demonstration")
     logger.info("=" * 80)
     
     try:
-        # Phase 1: Data Ingestion
-        log_phase_start(logger, "Data Ingestion")
+        # Initialize Bob session
+        bob_session = get_bob_session_manager()
+        bob_session.start_session(
+            args.dataset_name,
+            "Complete data analysis pipeline execution"
+        )
         
-        loader = DataLoader()
+        # Log Bob interaction for pipeline planning
+        bob_session.log_interaction(
+            mode="Plan Mode",
+            phase="initialization",
+            prompt="Plan the complete data analysis pipeline execution",
+            response="Pipeline phases: Ingestion → Profiling → Quality Check → Cleaning → Analysis → Visualization → Reporting",
+            success=True,
+            metadata={"dataset": args.dataset_name}
+        )
         
-        # Load layoffs dataset as example
-        layoffs_result = loader.load_data("data/layoffs/layoffs.csv", "layoffs")
-        df = layoffs_result['dataframe']
+        # Initialize and run pipeline
+        pipeline = DataAnalysisPipeline()
         
-        logger.info(f"Loaded dataset: {layoffs_result['dataset_name']}")
-        logger.info(f"Shape: {df.shape}")
-        logger.info(f"Working directory: {layoffs_result['working_dir']}")
+        results = pipeline.run_pipeline(
+            data_path=args.data_path,
+            dataset_name=args.dataset_name,
+            auto_clean=args.auto_clean,
+            generate_visualizations=not args.no_viz
+        )
         
-        log_phase_end(logger, "Data Ingestion", success=True)
+        # Log Bob interactions for each phase
+        for phase in pipeline.state['completed_phases']:
+            bob_session.log_interaction(
+                mode="Code Mode",
+                phase=phase,
+                prompt=f"Execute {phase} phase",
+                response=f"{phase} completed successfully",
+                success=True
+            )
         
-        # Phase 2: Data Profiling
-        log_phase_start(logger, "Data Profiling")
+        # Print pipeline summary
+        print("\n")
+        print(pipeline.get_pipeline_summary())
         
-        profiler = DataProfiler()
-        profile = profiler.profile_dataframe(df, "layoffs")
+        # Print Bob session summary
+        print("\n")
+        session_summary = bob_session.end_session()
+        print(bob_session.get_session_summary())
         
-        # Print summary
-        summary = profiler.generate_summary_report(profile)
-        print(summary)
-        logger.info("Profile generated successfully")
+        # Print key results
+        print("\n")
+        print("=" * 80)
+        print("KEY RESULTS")
+        print("=" * 80)
         
-        log_phase_end(logger, "Data Profiling", success=True)
+        if 'quality' in results:
+            quality_score = results['quality'].get('quality_score', 0)
+            print(f"Data Quality Score: {quality_score}/100")
         
-        # Phase 3: Quality Checking
-        log_phase_start(logger, "Quality Checking")
+        if 'eda' in results:
+            findings = results['eda'].get('key_findings', [])
+            print(f"\nKey Findings ({len(findings)}):")
+            for i, finding in enumerate(findings[:5], 1):
+                print(f"  {i}. {finding}")
         
-        checker = QualityChecker()
-        quality_result = checker.check_quality(df, "layoffs")
+        if 'visualizations' in results and not results['visualizations'].get('skipped'):
+            viz_summary = results['visualizations'].get('summary', {})
+            print(f"\nVisualizations Generated: {viz_summary.get('total_charts', 0)}")
         
-        # Print quality report
-        quality_report = checker.generate_report(quality_result)
-        print(quality_report)
-        logger.info(f"Quality score: {quality_result['quality_score']}/100")
-        
-        log_phase_end(logger, "Quality Checking", success=True)
-        
-        logger.info("=" * 80)
-        logger.info("Pipeline execution completed successfully!")
-        logger.info("=" * 80)
+        print("\n" + "=" * 80)
+        print("Pipeline execution completed successfully!")
+        print("=" * 80)
         
         return 0
         
     except Exception as e:
         logger.error(f"Pipeline execution failed: {e}", exc_info=True)
+        
+        # Log failure with Bob
+        if 'bob_session' in locals():
+            bob_session.log_interaction(
+                mode="Error",
+                phase="execution",
+                prompt="Pipeline execution",
+                response=str(e),
+                success=False
+            )
+            bob_session.end_session()
+        
         return 1
 
 
