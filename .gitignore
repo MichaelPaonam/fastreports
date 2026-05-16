@@ -76,5 +76,6 @@ dmypy.json
 *.bak
 *.swp
 hackathon.md
+package-lock.json
 
 # Made with Bob
