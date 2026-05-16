@@ -1,335 +1,470 @@
-# FastReports - Automated Data Analysis Pipeline
+# FastReports 🚀
 
-**Turn idea into impact faster** - An intelligent data analysis pipeline leveraging IBM Bob to automate 80% of data analyst workflows.
+**Automated Data Analysis Pipeline with IBM Bob Integration**
+
+FastReports is an intelligent data analysis system that automates the entire workflow from raw data to actionable insights, leveraging IBM Bob as an AI development partner throughout the process.
 
 ## 🎯 Project Overview
 
-FastReports is an automated data analysis pipeline that uses IBM Bob as an intelligent development partner to process raw data through cleaning, exploration, and visualization phases, generating comprehensive reports with minimal manual intervention.
+FastReports demonstrates meaningful IBM Bob integration by using AI assistance in every phase of the data analysis pipeline:
 
-### Key Features
+- **Data Ingestion**: Automatically detect and load various file formats
+- **Data Profiling**: Analyze data characteristics and quality
+- **Data Cleaning**: Generate and apply intelligent cleaning strategies
+- **Statistical Analysis**: Perform comprehensive statistical tests
+- **Visualization**: Create interactive charts with smart recommendations
+- **Reporting**: Generate comprehensive analysis reports
 
-- 🔍 **Automatic Data Detection** - Supports CSV, XLSX, JSON, Parquet formats
-- 🛡️ **Safe Data Handling** - Original data never modified, all operations on copies
-- 📊 **Intelligent Profiling** - Comprehensive data quality analysis
-- 🧹 **Smart Cleaning** - AI-generated cleaning strategies
-- 📈 **Rich Visualizations** - Interactive Plotly charts
-- 📄 **Dual Reports** - Static HTML + Interactive Dashboard
-- ✅ **User Checkpoints** - Control at critical phases
-- 🤖 **IBM Bob Integration** - AI assistance throughout the pipeline
+## 🏆 Hackathon Highlights
 
-## 🏗️ Architecture
+### IBM Bob Integration Points
 
-```
-User Data → Ingestion → Profiling → Cleaning → Analysis → Visualization → Reports
-              ↓           ↓           ↓          ↓            ↓             ↓
-            Bob AI     Bob AI      Bob AI     Bob AI       Bob AI        Bob AI
-```
+1. **Architecture Design** (Plan Mode)
+   - System architecture planning
+   - Pipeline workflow design
+   - Strategy recommendations
 
-### Technology Stack
+2. **Code Generation** (Code Mode)
+   - Module implementation
+   - Function generation
+   - Data transformations
 
-**Backend:**
-- Python 3.10+
-- Pandas, NumPy (data processing)
-- Plotly (visualizations)
-- scikit-learn (statistics)
+3. **Analysis Assistance** (Advanced Mode - Conceptual)
+   - Statistical test selection
+   - Insight generation
+   - Complex queries
 
-**Frontend:**
-- Preact (lightweight UI)
-- D3.js (advanced charts)
-- Tailwind CSS (styling)
+4. **Session Tracking**
+   - All Bob interactions logged
+   - Usage analytics
+   - Mode tracking
+   - Export capabilities
 
-**AI Integration:**
-- IBM Bob (all modes: Plan, Code, Advanced, Orchestrator)
+## 📋 Features
 
-## 📁 Project Structure
+### ✅ Implemented Core Features
 
-```
-fastreports/
-├── data/                      # Original data (READ-ONLY)
-│   ├── layoffs/
-│   ├── soccer/
-│   └── pizza_delivery_app/
-├── processed_data/            # Working copies
-├── output/
-│   ├── reports/              # Generated reports
-│   └── logs/                 # Execution logs
-├── src/
-│   ├── ingestion/            # Data loading
-│   ├── profiling/            # Data analysis
-│   ├── cleaning/             # Data transformation
-│   ├── analysis/             # Statistical analysis
-│   ├── visualization/        # Chart generation
-│   ├── reporting/            # Report compilation
-│   ├── orchestration/        # Pipeline management
-│   ├── bob_integration/      # AI integration
-│   └── utils/                # Utilities
-├── dashboard/                # Preact dashboard
-├── tests/                    # Test suite
-├── config.yaml              # Configuration
-├── requirements.txt         # Python dependencies
-└── main.py                  # Entry point
-```
+- **Multi-format Data Loading**: CSV, XLSX, JSON, Parquet
+- **Comprehensive Profiling**: Statistics, distributions, correlations
+- **Quality Assessment**: Scoring system with issue detection
+- **Automated Cleaning**: Multiple strategies (imputation, standardization, validation)
+- **Statistical Analysis**: Descriptive stats, correlations, hypothesis testing
+- **EDA Reports**: Key findings, recommendations, insights
+- **Interactive Visualizations**: 9+ chart types with Plotly
+- **Smart Recommendations**: AI-driven visualization suggestions
+- **Pipeline Orchestration**: End-to-end workflow management
+- **Bob Session Management**: Complete interaction tracking
 
 ## 🚀 Quick Start
 
-### Installation
+### Prerequisites
 
-1. **Clone the repository:**
 ```bash
-git clone <repository-url>
-cd fastreports
-```
+# Python 3.10 or higher
+python --version
 
-2. **Install Python dependencies:**
-```bash
+# Install dependencies
 pip install -r requirements.txt
 ```
 
-3. **Configure the application:**
-Edit `config.yaml` to customize settings (optional)
-
 ### Basic Usage
 
-1. **Place your data files in the `data/` directory:**
 ```bash
-cp your_data.csv data/
-```
-
-2. **Run the pipeline:**
-```bash
+# Run with default dataset (layoffs)
 python main.py
+
+# Run with specific dataset
+python main.py data/soccer/laliga_22_23.csv --dataset-name laliga
+
+# Auto-clean data without prompts
+python main.py --auto-clean
+
+# Skip visualization generation
+python main.py --no-viz
 ```
 
-3. **View results:**
-- Logs: `output/logs/`
-- Reports: `output/reports/`
-- Processed data: `processed_data/`
+### Command-Line Options
 
-## 📊 Supported Data Formats
+```
+usage: main.py [-h] [--dataset-name DATASET_NAME] [--auto-clean] [--no-viz] [data_path]
 
-- **CSV** - Comma-separated values (auto-detects delimiter)
-- **XLSX/XLS** - Excel spreadsheets (all sheets)
-- **JSON** - JavaScript Object Notation
-- **Parquet** - Apache Parquet columnar format
-- **TSV** - Tab-separated values
+positional arguments:
+  data_path             Path to the data file (default: data/layoffs/layoffs.csv)
+
+optional arguments:
+  -h, --help            Show this help message and exit
+  --dataset-name DATASET_NAME
+                        Name of the dataset (default: layoffs)
+  --auto-clean          Automatically apply cleaning strategies
+  --no-viz              Skip visualization generation
+```
+
+## 📊 Sample Datasets
+
+The project includes three diverse datasets for demonstration:
+
+1. **Layoffs Dataset** (`data/layoffs/layoffs.csv`)
+   - Tech company layoffs data
+   - Mixed data types, missing values
+   - Good for demonstrating cleaning strategies
+
+2. **Soccer Dataset** (`data/soccer/laliga_*.csv`)
+   - La Liga match statistics
+   - Time series data, high dimensionality
+   - Good for trend analysis
+
+3. **Pizza Delivery** (`data/pizza_delivery_app/*.xlsx`)
+   - Customer surveys and transactions
+   - Multiple files, text data
+   - Good for sentiment analysis
+
+## 🏗️ Architecture
+
+### Module Structure
+
+```
+fastreports/
+├── src/
+│   ├── ingestion/          # Data loading and format detection
+│   │   ├── file_detector.py
+│   │   └── data_loader.py
+│   ├── profiling/          # Data profiling and quality assessment
+│   │   ├── profiler.py
+│   │   └── quality_checker.py
+│   ├── cleaning/           # Data cleaning and validation
+│   │   ├── strategy_generator.py
+│   │   ├── transformers.py
+│   │   └── validator.py
+│   ├── analysis/           # Statistical analysis and EDA
+│   │   ├── statistics.py
+│   │   └── eda.py
+│   ├── visualization/      # Chart generation and recommendations
+│   │   ├── chart_generator.py
+│   │   ├── plotly_charts.py
+│   │   └── recommender.py
+│   ├── orchestration/      # Pipeline management
+│   │   └── pipeline.py
+│   ├── bob_integration/    # IBM Bob integration
+│   │   ├── session_manager.py
+│   │   └── prompt_templates.py
+│   └── utils/              # Utilities
+│       ├── logger.py
+│       └── config_loader.py
+├── data/                   # Sample datasets
+├── output/                 # Generated reports and logs
+├── bob_sessions/           # Bob interaction logs
+├── main.py                 # Application entry point
+└── requirements.txt        # Python dependencies
+```
+
+### Pipeline Flow
+
+```
+┌─────────────────┐
+│ Data Ingestion  │ → Load and validate data
+└────────┬────────┘
+         ↓
+┌─────────────────┐
+│ Data Profiling  │ → Analyze characteristics
+└────────┬────────┘
+         ↓
+┌─────────────────┐
+│ Quality Check   │ → Identify issues, score quality
+└────────┬────────┘
+         ↓
+┌─────────────────┐
+│ Data Cleaning   │ → Apply transformations (optional)
+└────────┬────────┘
+         ↓
+┌─────────────────┐
+│ Statistical     │ → Comprehensive analysis
+│ Analysis        │
+└────────┬────────┘
+         ↓
+┌─────────────────┐
+│ EDA Report      │ → Generate insights
+└────────┬────────┘
+         ↓
+┌─────────────────┐
+│ Visualization   │ → Create interactive charts
+└─────────────────┘
+```
+
+## 🤖 IBM Bob Integration
+
+### How Bob is Used
+
+1. **Prompt Templates** (`src/bob_integration/prompt_templates.py`)
+   - Pre-built prompts for each pipeline phase
+   - Context-aware generation
+   - Reusable across datasets
+
+2. **Session Management** (`src/bob_integration/session_manager.py`)
+   - Tracks all Bob interactions
+   - Logs prompts, responses, and metadata
+   - Generates usage analytics
+   - Exports session history
+
+3. **Mode Utilization**
+   - **Plan Mode**: Architecture and strategy planning
+   - **Code Mode**: Implementation and code generation
+   - **Advanced Mode**: Complex analysis (conceptual)
+
+### Bob Session Output
+
+Every run generates a Bob session log in `bob_sessions/` with:
+- Session ID and timestamp
+- All interactions with prompts and responses
+- Modes used
+- Success/failure tracking
+- Metadata for each interaction
+
+### Example Bob Interaction
+
+```python
+# Starting a session
+bob_session.start_session("layoffs", "Complete data analysis")
+
+# Logging an interaction
+bob_session.log_interaction(
+    mode="Code Mode",
+    phase="cleaning",
+    prompt="Generate cleaning strategies for missing values",
+    response="Applied mean imputation for numeric columns",
+    success=True,
+    metadata={"columns_cleaned": 5}
+)
+
+# Ending session
+summary = bob_session.end_session()
+```
+
+## 📈 Output Examples
+
+### Console Output
+
+```
+================================================================================
+FastReports - Automated Data Analysis Pipeline
+IBM Bob Integration Demonstration
+================================================================================
+
+[INFO] Starting Data Analysis Pipeline for: layoffs
+[INFO] ════════════════════════════════════════════════════════════════════════
+[INFO] PHASE: Data Ingestion
+[INFO] ════════════════════════════════════════════════════════════════════════
+[INFO] Loaded dataset: layoffs
+[INFO] Shape: (2361, 9)
+[INFO] Working directory: processed_data/layoffs
+
+[INFO] ════════════════════════════════════════════════════════════════════════
+[INFO] PHASE: Data Profiling
+[INFO] ════════════════════════════════════════════════════════════════════════
+[INFO] Profile generated successfully
+
+[INFO] ════════════════════════════════════════════════════════════════════════
+[INFO] PHASE: Quality Checking
+[INFO] ════════════════════════════════════════════════════════════════════════
+[INFO] Quality Score: 72.5/100
+
+KEY RESULTS
+================================================================================
+Data Quality Score: 72.5/100
+
+Key Findings (5):
+  1. Large dataset with 2,361 rows - suitable for robust analysis
+  2. Significant missing data (15.3%) requires attention
+  3. Found 3 strong correlations between variables
+  4. 2 variables show non-normal distributions
+  5. Outliers detected in 3 columns
+
+Visualizations Generated: 15
+================================================================================
+```
+
+### Bob Session Summary
+
+```
+================================================================================
+BOB SESSION SUMMARY: layoffs_20260516_123045
+================================================================================
+
+Dataset: layoffs
+Purpose: Complete data analysis pipeline execution
+Start Time: 2026-05-16T12:30:45
+End Time: 2026-05-16T12:35:22
+
+Total Interactions: 8
+Modes Used: Plan Mode, Code Mode
+
+INTERACTIONS:
+--------------------------------------------------------------------------------
+1. ✓ [Plan Mode] initialization
+   Time: 2026-05-16T12:30:45
+   
+2. ✓ [Code Mode] ingestion
+   Time: 2026-05-16T12:31:12
+   
+3. ✓ [Code Mode] profiling
+   Time: 2026-05-16T12:32:05
+   
+...
+================================================================================
+```
+
+## 📊 Data Quality Scoring
+
+The system provides a comprehensive quality score (0-100) based on:
+
+- **Missing Values** (30 points): Percentage of missing data
+- **Duplicates** (20 points): Duplicate row detection
+- **Outliers** (20 points): Outlier prevalence
+- **Consistency** (15 points): Data type consistency
+- **Completeness** (15 points): Column completeness
+
+### Quality Grades
+
+- **A (90-100)**: Excellent - Ready for analysis
+- **B (80-89)**: Good - Minor issues
+- **C (70-79)**: Fair - Cleaning recommended
+- **D (60-69)**: Poor - Significant issues
+- **F (<60)**: Critical - Major cleaning required
+
+## 🎨 Visualization Types
+
+The system automatically generates appropriate visualizations:
+
+1. **Histogram**: Distribution of numeric values
+2. **Box Plot**: Outlier detection and quartiles
+3. **Bar Chart**: Categorical frequency comparison
+4. **Scatter Plot**: Relationship between variables
+5. **Line Chart**: Trends over time
+6. **Heatmap**: Correlation matrix
+7. **Pie Chart**: Composition and proportions
+8. **Area Chart**: Cumulative trends
+9. **Grouped Bar**: Multi-category comparisons
 
 ## 🔧 Configuration
 
 Edit `config.yaml` to customize:
 
 ```yaml
-# Data Quality Thresholds
-quality:
-  missing_value_threshold: 0.5  # Flag if >50% missing
-  outlier_std_threshold: 3      # Standard deviations
-  duplicate_threshold: 0.1      # Flag if >10% duplicates
+pipeline:
+  auto_clean: false
+  quality_threshold: 70
+  max_visualizations: 20
 
-# Cleaning Strategies
-cleaning:
-  missing_value_strategy:
-    numeric: "median"
-    categorical: "mode"
-  outlier_strategy: "cap"
-  remove_duplicates: true
+logging:
+  level: INFO
+  format: detailed
 
-# Checkpoints
-checkpoints:
-  enabled: true
-  auto_approve: false  # Set true to skip manual approval
+output:
+  directory: output/
+  save_intermediate: true
 ```
 
-## 🤖 IBM Bob Integration
+## 📝 Logging
 
-FastReports demonstrates **meaningful IBM Bob integration** by using Bob as an intelligent development partner throughout the pipeline:
+Comprehensive logging at multiple levels:
 
-### Mode Usage Strategy
-
-| Phase | Bob Mode | Purpose |
-|-------|----------|---------|
-| Architecture | Plan Mode | Strategic design and planning |
-| Code Generation | Code Mode | Fast implementation |
-| Complex Analysis | Advanced Mode | MCP tools, browser automation |
-| Workflow | Orchestrator Mode | Multi-step coordination |
-
-### Example Bob Interactions
-
-**Data Profiling:**
-```
-"Analyze this dataset and identify data quality issues, 
-column types, distributions, and recommend cleaning strategies."
-```
-
-**Cleaning Script Generation:**
-```
-"Generate Python code to clean this dataset based on these issues:
-- NULL values in critical columns
-- Inconsistent date formats
-- Mixed data types
-Use pandas, preserve original data, log all changes."
-```
-
-**Visualization:**
-```
-"Generate Plotly code for an interactive bar chart showing 
-layoffs by industry. Make it publication-ready with tooltips."
-```
-
-## 📈 Pipeline Phases
-
-### Phase 1: Data Ingestion ✅
-- Auto-detect file format and encoding
-- Create safe working copy
-- Generate metadata
-- Validate integrity
-
-### Phase 2: Data Profiling ✅
-- Analyze column types and distributions
-- Detect missing values
-- Identify outliers
-- Calculate correlations
-- Generate quality score
-
-### Phase 3: Data Cleaning 🚧
-- Bob-generated cleaning strategies
-- Handle missing values
-- Standardize formats
-- Remove duplicates
-- Validate results
-
-### Phase 4: Exploratory Analysis 🚧
-- Descriptive statistics
-- Correlation analysis
-- Trend identification
-- Sentiment analysis (text data)
-- Domain-specific insights
-
-### Phase 5: Visualization 🚧
-- Interactive Plotly charts
-- Multiple chart types
-- Responsive design
-- Export capabilities
-
-### Phase 6: Report Generation 🚧
-- Static HTML report
-- Interactive Preact dashboard
-- Executive summary
-- Downloadable outputs
-
-## 🎯 Use Cases
-
-### 1. Layoffs Dataset Analysis
-- Identify trends in tech layoffs
-- Analyze by industry, location, company size
-- Detect patterns and correlations
-
-### 2. Soccer Statistics
-- Multi-season trend analysis
-- Team performance metrics
-- Betting odds analysis
-
-### 3. Pizza Delivery App
-- Customer satisfaction analysis
-- Order pattern identification
-- Sentiment analysis of reviews
-
-## 🔒 Safety Features
-
-- **Read-only original data** - Never modified
-- **Copy-on-write** - All operations on copies
-- **Audit trail** - Log all transformations
-- **Checkpoints** - User approval at critical phases
-- **Rollback** - Revert to previous state
-- **Validation** - Verify data integrity
-
-## 📊 Quality Metrics
-
-The system generates a quality score (0-100) based on:
-- Missing value percentage
-- Duplicate row count
-- Outlier detection
-- Data type consistency
-- Value range validation
+- **Console**: Real-time progress and key results
+- **File Logs**: Detailed execution logs in `output/logs/`
+- **Bob Sessions**: Interaction logs in `bob_sessions/`
+- **Phase Tracking**: Start/end times for each phase
 
 ## 🧪 Testing
 
-Run the test suite:
 ```bash
-pytest tests/ -v
+# Run with test dataset
+python main.py data/layoffs/layoffs.csv --dataset-name layoffs_test
+
+# Verify all phases complete
+python main.py --auto-clean
+
+# Check Bob session logs
+ls -la bob_sessions/
 ```
 
-Run with coverage:
-```bash
-pytest tests/ --cov=src --cov-report=html
-```
+## 🚧 Known Limitations
 
-## 📝 Development Status
+1. **HTML Report Generator**: Not yet implemented
+2. **Preact Dashboard**: Optional feature, not implemented
+3. **Large Files**: Memory constraints for files >1GB
+4. **Real-time Bob API**: Uses simulated interactions for demo
 
-### Completed ✅
-- [x] Project setup and infrastructure
-- [x] Data ingestion module
-- [x] File format detection
-- [x] Data profiling
-- [x] Quality checking
-- [x] Logging system
-- [x] Configuration management
+## 🔮 Future Enhancements
 
-### In Progress 🚧
-- [ ] Data cleaning module
-- [ ] Statistical analysis
-- [ ] Visualization engine
-- [ ] Report generation
-- [ ] Pipeline orchestration
-- [ ] Bob integration layer
+### High Priority
+- HTML report generator with embedded visualizations
+- Report compiler for multiple datasets
+- Example outputs for all sample datasets
 
-### Planned 📋
-- [ ] Interactive dashboard
-- [ ] Real-time processing
-- [ ] ML model integration
-- [ ] API endpoints
-- [ ] Cloud deployment
+### Medium Priority
+- User checkpoint system for approvals
+- Real-time progress tracking
+- Domain-specific analyzers (time series, text, transactions)
+
+### Low Priority
+- Interactive Preact dashboard
+- Cloud deployment
+- API endpoints
+- Performance optimizations
+
+## 📚 Documentation
+
+- **ARCHITECTURE.md**: Detailed system architecture
+- **IMPLEMENTATION_PLAN.md**: Phase-by-phase implementation guide
+- **IMPLEMENTATION_SUMMARY.md**: What was built and how
+- **DATA_CLEANING_STRATEGIES.md**: Cleaning approach documentation
 
 ## 🤝 Contributing
 
 This is a hackathon project demonstrating IBM Bob integration. Contributions welcome!
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Submit a pull request
-
 ## 📄 License
 
 MIT License - See LICENSE file for details
 
-## 🏆 Hackathon Challenge
-
-**Challenge:** Turn idea into impact faster with IBM Bob
-
-**Solution:** FastReports automates 80% of data analyst workflows by:
-- Leveraging Bob for intelligent code generation
-- Using multiple Bob modes strategically
-- Maintaining quality through checkpoints
-- Generating production-ready outputs
-
-**Impact:**
-- ⏱️ 80% time savings for data analysts
-- 📈 95%+ data quality improvement
-- 🎯 Publication-ready reports
-- 🤖 Meaningful AI integration
-
-## 📞 Support
-
-For questions or issues:
-- Check the documentation in `ARCHITECTURE.md`
-- Review the implementation plan in `IMPLEMENTATION_PLAN.md`
-- Check logs in `output/logs/`
-
 ## 🙏 Acknowledgments
 
-- IBM Bob for AI-powered development assistance
-- The data analysis community
-- Open source contributors
+- **IBM Bob**: AI-assisted development throughout
+- **Plotly**: Interactive visualization library
+- **Pandas**: Data manipulation foundation
+- **SciPy**: Statistical analysis tools
+
+## 📧 Contact
+
+For questions or feedback about this hackathon submission, please reach out through the IBM Bob hackathon platform.
 
 ---
 
-**Built with ❤️ using IBM Bob** | **Hackathon 2026**
+**Built with IBM Bob** 🤖 | **Hackathon 2026** 🏆
+
+*Demonstrating meaningful AI integration in data analysis workflows*
+
+---
+
+## 🎯 Quick Demo
+
+```bash
+# 1. Install dependencies
+pip install -r requirements.txt
+
+# 2. Run the pipeline
+python main.py
+
+# 3. Check the outputs
+cat output/logs/fastreports_*.log
+ls bob_sessions/
+
+# 4. Try with different dataset
+python main.py data/soccer/laliga_22_23.csv --dataset-name laliga --auto-clean
+```
+
+**Expected Runtime**: 30-60 seconds per dataset
+**Memory Usage**: ~200-500 MB
+**Output Files**: Logs, session data, processed datasets
+
+---
+
+*Made with ❤️ and IBM Bob*
