@@ -1,0 +1,79 @@
+.chart-viewer {
+  background: var(--bg-primary);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.chart-controls {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 150px;
+  flex: 1;
+}
+
+.control-group label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.control-group select {
+  width: 100%;
+  font-size: 14px;
+}
+
+.chart-container {
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chart-empty {
+  text-align: center;
+  color: var(--text-secondary);
+  padding: 60px 20px;
+}
+
+.chart-empty p {
+  font-size: 16px;
+  margin: 0;
+}
+
+/* Plotly overrides */
+.chart-container .js-plotly-plot {
+  width: 100% !important;
+}
+
+.chart-container .plotly {
+  width: 100% !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .chart-controls {
+    flex-direction: column;
+  }
+
+  .control-group {
+    min-width: 100%;
+  }
+
+  .chart-container {
+    min-height: 400px;
+  }
+}
+
+/* Made with Bob */
