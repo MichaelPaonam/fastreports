@@ -10,17 +10,17 @@
     "lint": "eslint src --ext .js,.jsx"
   },
   "dependencies": {
+    "@duckdb/duckdb-wasm": "^1.33.1-dev45.0",
+    "plotly.js": "^2.27.1",
     "preact": "^10.19.3",
     "preact-router": "^4.1.2",
-    "plotly.js": "^2.27.1",
-    "react-plotly.js": "^2.6.0",
-    "duckdb-wasm": "^1.28.0"
+    "react-plotly.js": "^2.6.0"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.8.1",
-    "vite": "^5.0.11",
     "eslint": "^8.56.0",
-    "eslint-config-preact": "^1.3.0"
+    "eslint-config-preact": "^1.3.0",
+    "vite": "^5.0.11"
   },
   "eslintConfig": {
     "extends": "preact"
