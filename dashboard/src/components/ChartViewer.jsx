@@ -6,10 +6,16 @@ import './ChartViewer.css';
 export default function ChartViewer({ data, columns }) {
   const [chartType, setChartType] = useState('bar');
   const [xAxis, setXAxis] = useState(columns[0] || '');
-  const [yAxis, setYAxis] = useState(columns[1] || '');
+  const [yAxis, setYAxis] = useState('');
   const [groupBy, setGroupBy] = useState('');
   const [chartData, setChartData] = useState([]);
   const [layout, setLayout] = useState({});
+
+  useEffect(() => {
+    setXAxis(columns[0] || '');
+    setYAxis('');
+    setGroupBy('');
+  }, [columns]);
 
   useEffect(() => {
     if (!data || !data.length || !xAxis) return;

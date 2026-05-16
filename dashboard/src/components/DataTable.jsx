@@ -1,11 +1,15 @@
 import { h } from 'preact';
-import { useState, useMemo } from 'preact/hooks';
+import { useState, useMemo, useEffect } from 'preact/hooks';
 import './DataTable.css';
 
 export default function DataTable({ data, columns, pageSize = 50 }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortColumn, setSortColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState('asc');
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [data]);
 
   const sortedData = useMemo(() => {
     if (!sortColumn) return data;

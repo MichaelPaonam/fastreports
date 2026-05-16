@@ -132,19 +132,19 @@ export default function FilterPanel({ data, columns, onFilterChange, onQueryExec
                     type="number"
                     placeholder="Min"
                     value={filters[column]?.min || ''}
-                    onChange={(e) => handleFilterChange(column, {
-                      ...filters[column],
-                      min: e.target.value
-                    })}
+                    onChange={(e) => {
+                      const next = { ...filters[column], min: e.target.value };
+                      handleFilterChange(column, (!next.min && !next.max) ? '' : next);
+                    }}
                   />
                   <input
                     type="number"
                     placeholder="Max"
                     value={filters[column]?.max || ''}
-                    onChange={(e) => handleFilterChange(column, {
-                      ...filters[column],
-                      max: e.target.value
-                    })}
+                    onChange={(e) => {
+                      const next = { ...filters[column], max: e.target.value };
+                      handleFilterChange(column, (!next.min && !next.max) ? '' : next);
+                    }}
                   />
                 </div>
               ) : (

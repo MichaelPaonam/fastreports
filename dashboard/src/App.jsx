@@ -106,7 +106,6 @@ export default function App() {
   };
 
   const handleQueryExecute = async (query) => {
-    setLoading(true);
     setError(null);
 
     try {
@@ -140,8 +139,6 @@ export default function App() {
     } catch (err) {
       console.error('Error executing query:', err);
       setError(err.message || 'Query execution failed. Please check your SQL syntax.');
-    } finally {
-      setLoading(false);
     }
   };
 
