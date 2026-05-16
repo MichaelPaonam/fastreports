@@ -40,7 +40,11 @@ export default function FilterPanel({ data, columns, onFilterChange, onQueryExec
     return 'text';
   };
 
-  const executeQuery = () => {
+  const executeQuery = (e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     if (sqlQuery.trim()) {
       onQueryExecute(sqlQuery);
     }
@@ -56,15 +60,17 @@ export default function FilterPanel({ data, columns, onFilterChange, onQueryExec
           {activeFilterCount > 0 && (
             <span className="filter-badge">{activeFilterCount} active</span>
           )}
-          <button 
-            className="btn btn-outline btn-sm" 
+          <button
+            type="button"
+            className="btn btn-outline btn-sm"
             onClick={clearFilters}
             disabled={activeFilterCount === 0}
           >
             Clear All
           </button>
-          <button 
-            className="btn btn-primary btn-sm" 
+          <button
+            type="button"
+            className="btn btn-primary btn-sm"
             onClick={() => setShowQueryBuilder(!showQueryBuilder)}
           >
             {showQueryBuilder ? 'Hide' : 'Show'} SQL Query
@@ -78,15 +84,24 @@ export default function FilterPanel({ data, columns, onFilterChange, onQueryExec
           <textarea
             value={sqlQuery}
             onChange={(e) => setSqlQuery(e.target.value)}
+            onKeyDown={(e) => {
+              // Execute query on Ctrl+Enter or Cmd+Enter
+              if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                e.preventDefault();
+                executeQuery(e);
+              }
+            }}
             placeholder="SELECT * FROM data WHERE column = 'value'"
             rows="4"
           />
-          <button className="btn btn-primary" onClick={executeQuery}>
+          <button type="button" className="btn btn-primary" onClick={executeQuery}>
             Execute Query
           </button>
           <div className="query-help">
             <small>
-              Example: <code>SELECT * FROM data WHERE age {'>'} 25 ORDER BY name</code>
+              <strong>Table name:</strong> Use <code>data</code> to reference the current dataset<br/>
+              <strong>Example:</strong> <code>SELECT * FROM data WHERE age {'>'} 25 ORDER BY name LIMIT 100</code><br/>
+              <strong>Tip:</strong> Press Ctrl+Enter (Cmd+Enter on Mac) to execute query
             </small>
           </div>
         </div>

@@ -74,7 +74,8 @@ export default function DataTable({ data, columns, pageSize = 50 }) {
           Showing {startIndex + 1}-{Math.min(endIndex, sortedData.length)} of {sortedData.length} rows
         </span>
         <div className="data-table-actions">
-          <button 
+          <button
+            type="button"
             className="btn btn-outline btn-sm"
             onClick={() => {
               const csv = [
@@ -127,6 +128,7 @@ export default function DataTable({ data, columns, pageSize = 50 }) {
       {totalPages > 1 && (
         <div className="data-table-pagination">
           <button
+            type="button"
             className="btn btn-outline btn-sm"
             onClick={() => goToPage(1)}
             disabled={currentPage === 1}
@@ -134,6 +136,7 @@ export default function DataTable({ data, columns, pageSize = 50 }) {
             First
           </button>
           <button
+            type="button"
             className="btn btn-outline btn-sm"
             onClick={() => goToPage(currentPage - 1)}
             disabled={currentPage === 1}
@@ -146,6 +149,7 @@ export default function DataTable({ data, columns, pageSize = 50 }) {
           </div>
 
           <button
+            type="button"
             className="btn btn-outline btn-sm"
             onClick={() => goToPage(currentPage + 1)}
             disabled={currentPage === totalPages}
@@ -153,6 +157,7 @@ export default function DataTable({ data, columns, pageSize = 50 }) {
             Next
           </button>
           <button
+            type="button"
             className="btn btn-outline btn-sm"
             onClick={() => goToPage(totalPages)}
             disabled={currentPage === totalPages}

@@ -217,8 +217,6 @@ async def execute_query(request: QueryRequest) -> Dict[str, Any]:
         # If data is provided, create temporary table
         if request.data:
             df = pd.DataFrame(request.data)
-            db.register("temp_data", df)
-            table_name = "temp_data"
         else:
             # Use the last loaded dataset from cache
             if not dataset_cache:
@@ -230,15 +228,24 @@ async def execute_query(request: QueryRequest) -> Dict[str, Any]:
             # Get the most recently loaded dataset
             last_path = list(dataset_cache.keys())[-1]
             df = dataset_cache[last_path]
-            db.register("temp_data", df)
-            table_name = "temp_data"
+        
+        # Register the dataframe with multiple common table names
+        # This allows users to use 'data', 'temp_data', or 'df' in their queries
+        db.register("data", df)
+        db.register("temp_data", df)
+        db.register("df", df)
+        
+        # Replace common table name variations in the query
+        query = request.query
         
         # Execute query
-        result = db.execute(request.query).fetchdf()
+        result = db.execute(query).fetchdf()
         
         # Convert to records
         data = result.to_dict(orient="records")
         columns = result.columns.tolist()
+        
+        logger.info(f"Query executed successfully, returned {len(data)} rows")
         
         return {
             "data": data,
@@ -248,7 +255,7 @@ async def execute_query(request: QueryRequest) -> Dict[str, Any]:
         }
         
     except Exception as e:
-        logger.error(f"Query execution error: {e}")
+        logger.error(f"Query execution error: {e}", exc_info=True)
         raise HTTPException(
             status_code=400,
             detail=f"Query execution failed: {str(e)}"

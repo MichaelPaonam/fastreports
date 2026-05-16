@@ -116,13 +116,30 @@ export default function App() {
         body: JSON.stringify({ query, data: filteredData })
       });
 
-      if (!response.ok) throw new Error('Query execution failed');
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.detail || 'Query execution failed');
+      }
 
       const result = await response.json();
-      setFilteredData(result.data || []);
+      
+      // Update both data and columns from query results
+      if (result.data && result.data.length > 0) {
+        // Update both data and filteredData so pagination and stats reflect query results
+        setData(result.data);
+        setFilteredData(result.data);
+        // Update columns if they changed (e.g., SELECT specific columns)
+        if (result.columns) {
+          setColumns(result.columns);
+        }
+      } else {
+        setData([]);
+        setFilteredData([]);
+        setError('Query returned no results');
+      }
     } catch (err) {
       console.error('Error executing query:', err);
-      setError('Query execution failed. Please check your SQL syntax.');
+      setError(err.message || 'Query execution failed. Please check your SQL syntax.');
     } finally {
       setLoading(false);
     }
@@ -150,7 +167,8 @@ export default function App() {
               <option key={ds.path} value={ds.path}>{ds.name}</option>
             ))}
           </select>
-          <button 
+          <button
+            type="button"
             className="btn btn-outline"
             onClick={generateMockData}
             disabled={loading}
@@ -204,12 +222,14 @@ export default function App() {
 
             <div className="tabs">
               <button
+                type="button"
                 className={`tab ${activeTab === 'table' ? 'active' : ''}`}
                 onClick={() => setActiveTab('table')}
               >
                 📊 Data Table
               </button>
               <button
+                type="button"
                 className={`tab ${activeTab === 'charts' ? 'active' : ''}`}
                 onClick={() => setActiveTab('charts')}
               >
