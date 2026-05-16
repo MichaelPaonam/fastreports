@@ -11,7 +11,7 @@ from src.utils.logger import get_logger, log_phase_start, log_phase_end
 from src.ingestion.data_loader import DataLoader
 from src.profiling.profiler import DataProfiler
 from src.profiling.quality_checker import QualityChecker
-from src.cleaning.strategy_generator import CleaningStrategyGenerator
+from src.cleaning.strategy_generator import StrategyGenerator
 from src.cleaning.transformers import DataTransformer
 from src.cleaning.validator import DataValidator
 from src.analysis.statistics import StatisticalAnalyzer
@@ -46,7 +46,7 @@ class DataAnalysisPipeline:
         self.data_loader = DataLoader()
         self.profiler = DataProfiler()
         self.quality_checker = QualityChecker()
-        self.strategy_generator = CleaningStrategyGenerator()
+        self.strategy_generator = StrategyGenerator()
         self.transformer = DataTransformer()
         self.validator = DataValidator()
         self.statistical_analyzer = StatisticalAnalyzer()
@@ -251,20 +251,13 @@ class DataAnalysisPipeline:
             # Generate cleaning strategies
             strategies = self.strategy_generator.generate_strategies(
                 df,
-                quality_result,
-                dataset_name
+                quality_result
             )
             
             logger.info(f"Generated {len(strategies)} cleaning strategies")
             
             # Apply transformations
-            cleaned_df = df.copy()
-            for strategy in strategies:
-                logger.info(f"Applying: {strategy['name']}")
-                cleaned_df = self.transformer.apply_transformation(
-                    cleaned_df,
-                    strategy
-                )
+            cleaned_df = self.transformer.apply_strategies(df, strategies)
             
             # Validate cleaned data
             validation_result = self.validator.validate_cleaned_data(

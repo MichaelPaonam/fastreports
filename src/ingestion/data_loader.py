@@ -123,7 +123,7 @@ class DataLoader:
     
     def _load_dataframe(self, file_path: Path, file_info: Dict[str, Any]) -> pd.DataFrame:
         """
-        Load data into pandas DataFrame.
+        Load data into pandas DataFrame with robust encoding handling.
         
         Args:
             file_path: Path to file
@@ -136,17 +136,64 @@ class DataLoader:
         
         try:
             if format_type == 'csv':
-                df = pd.read_csv(
-                    file_path,
-                    encoding=file_info.get('encoding', 'utf-8'),
-                    delimiter=file_info.get('delimiter', ',')
-                )
+                # Try multiple encodings in order of preference
+                detected_encoding = file_info.get('encoding', 'utf-8')
+                encodings_to_try = [
+                    detected_encoding,
+                    'utf-8',
+                    'latin-1',
+                    'iso-8859-1',
+                    'cp1252',
+                    'utf-16'
+                ]
+                
+                # Remove duplicates while preserving order
+                encodings_to_try = list(dict.fromkeys(encodings_to_try))
+                
+                last_error = None
+                for encoding in encodings_to_try:
+                    try:
+                        self.logger.debug(f"Attempting to read CSV with encoding: {encoding}")
+                        df = pd.read_csv(
+                            file_path,
+                            encoding=encoding,
+                            delimiter=file_info.get('delimiter', ','),
+                            encoding_errors='strict'
+                        )
+                        self.logger.info(f"Successfully loaded CSV with encoding: {encoding}")
+                        return df
+                    except (UnicodeDecodeError, UnicodeError) as e:
+                        last_error = e
+                        self.logger.debug(f"Failed with encoding {encoding}: {e}")
+                        continue
+                
+                # If all encodings fail, raise the last error
+                if last_error:
+                    raise last_error
+                    
             elif format_type == 'excel':
                 # Load first sheet by default
                 sheet_name = file_info.get('default_sheet', 0)
                 df = pd.read_excel(file_path, sheet_name=sheet_name)
             elif format_type == 'json':
-                df = pd.read_json(file_path, encoding=file_info.get('encoding', 'utf-8'))
+                # Try multiple encodings for JSON as well
+                detected_encoding = file_info.get('encoding', 'utf-8')
+                encodings_to_try = [detected_encoding, 'utf-8', 'latin-1', 'iso-8859-1']
+                encodings_to_try = list(dict.fromkeys(encodings_to_try))
+                
+                last_error = None
+                for encoding in encodings_to_try:
+                    try:
+                        df = pd.read_json(file_path, encoding=encoding)
+                        self.logger.info(f"Successfully loaded JSON with encoding: {encoding}")
+                        return df
+                    except (UnicodeDecodeError, UnicodeError) as e:
+                        last_error = e
+                        continue
+                
+                if last_error:
+                    raise last_error
+                    
             elif format_type == 'parquet':
                 df = pd.read_parquet(file_path)
             else:

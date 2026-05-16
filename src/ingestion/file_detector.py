@@ -68,13 +68,13 @@ class FileDetector:
         self.logger.info(f"Format detected: {file_info.get('format_type', 'unknown')}")
         return file_info
     
-    def _detect_encoding(self, file_path: Path, sample_size: int = 10000) -> str:
+    def _detect_encoding(self, file_path: Path, sample_size: int = 100000) -> str:
         """
-        Detect file encoding.
+        Detect file encoding with improved accuracy.
         
         Args:
             file_path: Path to file
-            sample_size: Number of bytes to sample
+            sample_size: Number of bytes to sample (increased for better detection)
             
         Returns:
             Detected encoding
@@ -89,10 +89,21 @@ class FileDetector:
             
             self.logger.debug(f"Encoding detected: {encoding} (confidence: {confidence:.2f})")
             
-            # Default to utf-8 if confidence is low
+            # Map common encoding aliases to standard names
+            encoding_map = {
+                'ascii': 'utf-8',  # ASCII is a subset of UTF-8
+                'ISO-8859-1': 'latin-1',
+                'ISO-8859-2': 'latin-1',
+                'Windows-1252': 'cp1252',
+            }
+            
+            if encoding:
+                encoding = encoding_map.get(encoding, encoding)
+            
+            # For low confidence, still return the detected encoding
+            # The data_loader will try multiple encodings as fallback
             if confidence < 0.7:
-                self.logger.warning(f"Low encoding confidence, defaulting to utf-8")
-                return 'utf-8'
+                self.logger.warning(f"Low encoding confidence ({confidence:.2f}), detected: {encoding}")
             
             return encoding or 'utf-8'
         except Exception as e:
