@@ -1,0 +1,114 @@
+.filter-panel {
+  background: var(--bg-primary);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+  margin-bottom: 20px;
+}
+
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--border);
+}
+
+.filter-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.filter-badge {
+  background: var(--primary);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 13px;
+}
+
+.query-builder {
+  background: var(--bg-secondary);
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.query-builder label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.query-builder textarea {
+  width: 100%;
+  font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+  font-size: 13px;
+  resize: vertical;
+  margin-bottom: 10px;
+}
+
+.query-help {
+  margin-top: 10px;
+  padding: 10px;
+  background: #fffbeb;
+  border-left: 3px solid var(--warning);
+  border-radius: 4px;
+}
+
+.query-help code {
+  background: #fef3c7;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 12px;
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filter-item label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.filter-item input,
+.filter-item select {
+  width: 100%;
+  font-size: 14px;
+}
+
+.number-filter {
+  display: flex;
+  gap: 8px;
+}
+
+.number-filter input {
+  flex: 1;
+}
+
+/* Made with Bob */
