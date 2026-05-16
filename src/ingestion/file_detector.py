@@ -89,16 +89,28 @@ class FileDetector:
             
             self.logger.debug(f"Encoding detected: {encoding} (confidence: {confidence:.2f})")
             
-            # Map common encoding aliases to standard names
+            # Map common encoding aliases to standard names (case-insensitive)
+            # ASCII is a subset of UTF-8, so we always prefer UTF-8 for better Unicode support
             encoding_map = {
-                'ascii': 'utf-8',  # ASCII is a subset of UTF-8
+                'ascii': 'utf-8',
+                'ASCII': 'utf-8',
+                'us-ascii': 'utf-8',
                 'ISO-8859-1': 'latin-1',
+                'iso-8859-1': 'latin-1',
                 'ISO-8859-2': 'latin-1',
+                'iso-8859-2': 'latin-1',
                 'Windows-1252': 'cp1252',
+                'windows-1252': 'cp1252',
+                'CP1252': 'cp1252',
             }
             
             if encoding:
-                encoding = encoding_map.get(encoding, encoding)
+                # Use case-insensitive mapping
+                mapped_encoding = encoding_map.get(encoding)
+                if not mapped_encoding and encoding:
+                    mapped_encoding = encoding_map.get(encoding.lower())
+                encoding = mapped_encoding if mapped_encoding else encoding
+                self.logger.info(f"Using encoding: {encoding} (confidence: {confidence:.2f})")
             
             # For low confidence, still return the detected encoding
             # The data_loader will try multiple encodings as fallback
