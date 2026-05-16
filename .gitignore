@@ -77,5 +77,6 @@ dmypy.json
 *.swp
 hackathon.md
 package-lock.json
+.playwright-mcp/
 
 # Made with Bob
