@@ -19,6 +19,7 @@ from src.analysis.eda import EDAReportGenerator
 from src.visualization.chart_generator import ChartGenerator
 from src.visualization.plotly_charts import PlotlyChartBuilder
 from src.visualization.recommender import VisualizationRecommender
+from src.reporting.html_generator import HTMLReportGenerator
 
 logger = get_logger(__name__)
 
@@ -54,6 +55,7 @@ class DataAnalysisPipeline:
         self.chart_generator = ChartGenerator()
         self.plotly_builder = PlotlyChartBuilder()
         self.viz_recommender = VisualizationRecommender()
+        self.html_generator = HTMLReportGenerator()
         
         # Pipeline results
         self.results = {}
@@ -116,7 +118,13 @@ class DataAnalysisPipeline:
                 viz_result = self._run_visualization_phase(df, dataset_name)
             else:
                 viz_result = {'skipped': True, 'reason': 'Visualization disabled'}
-            
+
+            # Phase 8: HTML Report Generation
+            figures = [v['figure'] for v in viz_result.get('figures', [])]
+            report_path = self._run_reporting_phase(
+                profiling_result, figures, stats_result, dataset_name
+            )
+
             # Compile final results
             self.results = {
                 'dataset_name': dataset_name,
@@ -127,6 +135,7 @@ class DataAnalysisPipeline:
                 'statistics': stats_result,
                 'eda': eda_result,
                 'visualizations': viz_result,
+                'report_path': report_path,
                 'pipeline_state': self.state
             }
             
@@ -415,6 +424,40 @@ class DataAnalysisPipeline:
             log_phase_end(logger, "Visualization Generation", success=False)
             raise
     
+    def _run_reporting_phase(
+        self,
+        profile: Dict[str, Any],
+        figures: List[Any],
+        stats_result: Dict[str, Any],
+        dataset_name: str,
+    ) -> str:
+        """Run HTML report generation phase."""
+        log_phase_start(logger, "HTML Report Generation")
+        self.state['current_phase'] = 'reporting'
+
+        try:
+            output_path = f"output/reports/{dataset_name}_report.html"
+            analysis_results = {
+                k: v for k, v in stats_result.items()
+                if isinstance(v, dict) and k != 'insights'
+            }
+            report_path = self.html_generator.generate_report(
+                profile=profile,
+                charts=figures,
+                analysis_results=analysis_results,
+                output_path=output_path,
+            )
+            logger.info(f"HTML report saved to: {report_path}")
+            self.state['completed_phases'].append('reporting')
+            log_phase_end(logger, "HTML Report Generation", success=True)
+            return report_path
+
+        except Exception as e:
+            self.state['failed_phases'].append('reporting')
+            log_phase_end(logger, "HTML Report Generation", success=False)
+            logger.warning(f"Report generation failed (non-fatal): {e}")
+            return ""
+
     def get_pipeline_summary(self) -> str:
         """Generate a summary of the pipeline execution."""
         lines = []

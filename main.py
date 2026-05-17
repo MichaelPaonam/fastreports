@@ -113,6 +113,9 @@ def main():
         if 'visualizations' in results and not results['visualizations'].get('skipped'):
             viz_summary = results['visualizations'].get('summary', {})
             print(f"\nVisualizations Generated: {viz_summary.get('total_charts', 0)}")
+
+        if results.get('report_path'):
+            print(f"\nHTML Report: {results['report_path']}")
         
         print("\n" + "=" * 80)
         print("Pipeline execution completed successfully!")

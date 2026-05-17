@@ -31,6 +31,8 @@ def _safe_json(obj: Any) -> Any:
     if isinstance(obj, (np.floating,)):
         v = float(obj)
         return None if math.isnan(v) or math.isinf(v) else v
+    if isinstance(obj, np.bool_):
+        return bool(obj)
     if isinstance(obj, np.ndarray):
         return _safe_json(obj.tolist())
     if isinstance(obj, pd.Timestamp):
