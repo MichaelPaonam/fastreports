@@ -117,7 +117,9 @@ def main():
             print(f"\nVisualizations Generated: {viz_summary.get('total_charts', 0)}")
 
         if results.get('report_path'):
-            print(f"\nHTML Report: {results['report_path']}")
+            report_abs = Path(results['report_path']).resolve()
+            link = f"\033]8;;file://{report_abs}\033\\{report_abs}\033]8;;\033\\"
+            print(f"\nHTML Report: {link}")
         
         print("\n" + "=" * 80)
         print("Pipeline execution completed successfully!")
