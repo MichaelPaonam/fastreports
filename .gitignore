@@ -79,4 +79,8 @@ hackathon.md
 package-lock.json
 .playwright-mcp/
 
+# Uploaded data files (keep .gitkeep)
+uploads/*
+!uploads/.gitkeep
+
 # Made with Bob
