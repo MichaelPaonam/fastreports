@@ -280,6 +280,7 @@ export default function App() {
               columns={columns}
               onFilterChange={handleFilterChange}
               onQueryExecute={handleQueryExecute}
+              hasModifiedData={data !== originalData}
             />
 
             <div className="tabs">

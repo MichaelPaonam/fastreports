@@ -2,7 +2,7 @@ import { h } from 'preact';
 import { useState, useEffect } from 'preact/hooks';
 import './FilterPanel.css';
 
-export default function FilterPanel({ data, columns, onFilterChange, onQueryExecute }) {
+export default function FilterPanel({ data, columns, onFilterChange, onQueryExecute, hasModifiedData }) {
   const [filters, setFilters] = useState({});
   const [sqlQuery, setSqlQuery] = useState('');
   const [showQueryBuilder, setShowQueryBuilder] = useState(false);
@@ -64,7 +64,7 @@ export default function FilterPanel({ data, columns, onFilterChange, onQueryExec
             type="button"
             className="btn btn-outline btn-sm"
             onClick={clearFilters}
-            disabled={activeFilterCount === 0}
+            disabled={activeFilterCount === 0 && !hasModifiedData}
           >
             Clear All
           </button>
