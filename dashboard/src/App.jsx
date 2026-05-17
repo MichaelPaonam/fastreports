@@ -1,5 +1,5 @@
-import { h } from 'preact';
-import { useState, useEffect } from 'preact/hooks';
+import { h, createRef } from 'preact';
+import { useState, useEffect, useRef } from 'preact/hooks';
 import DataTable from './components/DataTable';
 import ChartViewer from './components/ChartViewer';
 import FilterPanel from './components/FilterPanel';
@@ -18,6 +18,8 @@ export default function App() {
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('table');
   const [stats, setStats] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     loadDatasets();
@@ -82,6 +84,45 @@ export default function App() {
     setColumns(['id', 'name', 'category', 'value', 'date', 'status']);
     setOriginalColumns(['id', 'name', 'category', 'value', 'date', 'status']);
     setSelectedDataset('mock-data');
+  };
+
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setUploading(true);
+    setError(null);
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch(`${API_BASE}/api/upload`, {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({}));
+        throw new Error(err.detail || 'Upload failed');
+      }
+
+      const result = await response.json();
+
+      setDatasets(prev => {
+        const exists = prev.some(d => d.path === result.path);
+        if (exists) return prev;
+        return [...prev, { name: result.name, path: result.path, size: result.size }];
+      });
+
+      await loadDataset(result.path);
+    } catch (err) {
+      console.error('Upload error:', err);
+      setError(err.message);
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
   };
 
   const handleFilterChange = (filters) => {
@@ -181,6 +222,21 @@ export default function App() {
           >
             Load Demo Data
           </button>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={loading || uploading}
+          >
+            {uploading ? 'Uploading...' : 'Upload File'}
+          </button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".csv,.xlsx,.xls,.json,.parquet"
+            onChange={handleFileUpload}
+            style={{ display: 'none' }}
+          />
         </div>
 
         {error && (

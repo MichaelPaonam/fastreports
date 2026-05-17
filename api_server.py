@@ -5,11 +5,12 @@ FastAPI backend for the dashboard UI
 
 import os
 import json
+import shutil
 from pathlib import Path
 from typing import Dict, List, Any, Optional
 import pandas as pd
 import duckdb
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -86,39 +87,36 @@ async def get_datasets() -> Dict[str, List[DatasetInfo]]:
         Dictionary with list of datasets
     """
     try:
-        data_dir = Path("data").resolve()
         datasets = []
-        
-        # Scan data directory for supported files
         supported_extensions = [".csv", ".xlsx", ".xls", ".json", ".parquet"]
-        
-        if not data_dir.exists():
-            logger.warning(f"Data directory not found: {data_dir}")
-            return {"datasets": []}
-        
-        for root, dirs, files in os.walk(data_dir):
-            for file in files:
-                file_path = Path(root) / file
-                if file_path.suffix.lower() in supported_extensions:
-                    try:
-                        # Use relative path from current working directory
-                        rel_path = file_path.relative_to(Path.cwd())
-                        
-                        # Get file size
-                        size = file_path.stat().st_size
-                        
-                        # Create friendly name
-                        name = file_path.stem.replace("_", " ").title()
-                        
-                        datasets.append({
-                            "name": name,
-                            "path": str(rel_path).replace("\\", "/"),  # Normalize path separators
-                            "size": size
-                        })
-                    except (ValueError, OSError) as e:
-                        logger.warning(f"Skipping file {file_path}: {e}")
+
+        # Scan both data/ and uploads/ directories
+        scan_dirs = [Path("data").resolve(), Path("uploads").resolve()]
+
+        for data_dir in scan_dirs:
+            if not data_dir.exists():
+                continue
+
+            for root, dirs, files in os.walk(data_dir):
+                for file in files:
+                    if file == ".gitkeep":
                         continue
-        
+                    file_path = Path(root) / file
+                    if file_path.suffix.lower() in supported_extensions:
+                        try:
+                            rel_path = file_path.relative_to(Path.cwd())
+                            size = file_path.stat().st_size
+                            name = file_path.stem.replace("_", " ").title()
+
+                            datasets.append({
+                                "name": name,
+                                "path": str(rel_path).replace("\\", "/"),
+                                "size": size
+                            })
+                        except (ValueError, OSError) as e:
+                            logger.warning(f"Skipping file {file_path}: {e}")
+                            continue
+
         logger.info(f"Found {len(datasets)} datasets")
         return {"datasets": datasets}
         
@@ -312,6 +310,70 @@ async def get_profile(
     except Exception as e:
         logger.error(f"Error profiling dataset: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+
+SUPPORTED_UPLOAD_EXTENSIONS = {".csv", ".xlsx", ".xls", ".json", ".parquet"}
+MAX_UPLOAD_SIZE_MB = 100
+
+
+@app.post("/api/upload")
+async def upload_dataset(file: UploadFile = File(...)) -> Dict[str, Any]:
+    """
+    Upload a dataset file for analysis.
+
+    Returns:
+        Metadata about the uploaded dataset including path, rows, and columns.
+    """
+    ext = Path(file.filename).suffix.lower()
+    if ext not in SUPPORTED_UPLOAD_EXTENSIONS:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Unsupported file type '{ext}'. Supported: {', '.join(sorted(SUPPORTED_UPLOAD_EXTENSIONS))}"
+        )
+
+    uploads_dir = Path("uploads")
+    uploads_dir.mkdir(exist_ok=True)
+    dest = uploads_dir / file.filename
+
+    try:
+        contents = await file.read()
+        if len(contents) > MAX_UPLOAD_SIZE_MB * 1024 * 1024:
+            raise HTTPException(
+                status_code=400,
+                detail=f"File too large. Maximum size is {MAX_UPLOAD_SIZE_MB} MB."
+            )
+
+        with open(dest, "wb") as f:
+            f.write(contents)
+
+        loader = DataLoader()
+        result = loader.load_data(str(dest))
+        df = result.get("dataframe") if isinstance(result, dict) else result
+        if df is None:
+            dest.unlink(missing_ok=True)
+            raise HTTPException(status_code=400, detail="Could not parse uploaded file.")
+
+        rel_path = str(dest).replace("\\", "/")
+        dataset_cache[rel_path] = df
+
+        name = dest.stem.replace("_", " ").title()
+
+        logger.info(f"Uploaded dataset '{file.filename}': {len(df)} rows, {len(df.columns)} cols")
+
+        return {
+            "name": name,
+            "path": rel_path,
+            "rows": len(df),
+            "columns": df.columns.tolist(),
+            "size": len(contents)
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        dest.unlink(missing_ok=True)
+        logger.error(f"Upload failed: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=f"Upload failed: {str(e)}")
 
 
 def calculate_quality_score(profile: Dict[str, Any]) -> float:
