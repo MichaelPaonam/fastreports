@@ -294,7 +294,7 @@ class StatisticalAnalyzer:
             # Calculate trend
             if df_sorted[col].notna().sum() > 1:
                 x = np.arange(len(df_sorted))
-                y = df_sorted[col].fillna(method='ffill').fillna(method='bfill')
+                y = df_sorted[col].ffill().bfill()
                 
                 if len(y) > 0 and y.std() > 0:
                     slope, intercept, r_value, p_value, std_err = stats.linregress(x, y)

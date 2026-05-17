@@ -123,21 +123,21 @@ class DataTransformer:
         """Fill missing values with mean."""
         col = strategy.column
         fill_value = strategy.parameters.get('fill_value')
-        df[col].fillna(fill_value, inplace=True)
+        df[col] = df[col].fillna(fill_value)
         return df
     
     def _fill_with_median(self, df: pd.DataFrame, strategy: CleaningStrategy) -> pd.DataFrame:
         """Fill missing values with median."""
         col = strategy.column
         fill_value = strategy.parameters.get('fill_value')
-        df[col].fillna(fill_value, inplace=True)
+        df[col] = df[col].fillna(fill_value)
         return df
     
     def _fill_with_mode(self, df: pd.DataFrame, strategy: CleaningStrategy) -> pd.DataFrame:
         """Fill missing values with mode."""
         col = strategy.column
         fill_value = strategy.parameters.get('fill_value')
-        df[col].fillna(fill_value, inplace=True)
+        df[col] = df[col].fillna(fill_value)
         return df
     
     def _forward_fill(self, df: pd.DataFrame, strategy: CleaningStrategy) -> pd.DataFrame:
