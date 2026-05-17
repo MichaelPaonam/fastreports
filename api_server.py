@@ -29,7 +29,7 @@ app = FastAPI(
 # Add CORS middleware
 ALLOWED_ORIGINS = os.getenv(
     "ALLOWED_ORIGINS",
-    "http://localhost:3000,http://localhost:5173"
+    "http://localhost:3000,http://localhost:5173,https://fastreports.netlify.app"
 ).split(",")
 
 app.add_middleware(

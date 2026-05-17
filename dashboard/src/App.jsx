@@ -6,6 +6,7 @@ import FilterPanel from './components/FilterPanel';
 import './App.css';
 
 export default function App() {
+  const API_BASE = import.meta.env.VITE_API_URL || '';
   const [datasets, setDatasets] = useState([]);
   const [selectedDataset, setSelectedDataset] = useState(null);
   const [data, setData] = useState([]);
@@ -22,7 +23,7 @@ export default function App() {
 
   const loadDatasets = async () => {
     try {
-      const response = await fetch('/api/datasets');
+      const response = await fetch(`${API_BASE}/api/datasets`);
       if (!response.ok) throw new Error('Failed to load datasets');
       const data = await response.json();
       setDatasets(data.datasets || []);
@@ -42,7 +43,7 @@ export default function App() {
     setError(null);
     
     try {
-      const response = await fetch(`/api/data?path=${encodeURIComponent(datasetPath)}`);
+      const response = await fetch(`${API_BASE}/api/data?path=${encodeURIComponent(datasetPath)}`);
       if (!response.ok) throw new Error('Failed to load dataset');
       
       const result = await response.json();
@@ -109,7 +110,7 @@ export default function App() {
     setError(null);
 
     try {
-      const response = await fetch('/api/query', {
+      const response = await fetch(`${API_BASE}/api/query`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query, data: filteredData })
