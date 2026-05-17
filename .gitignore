@@ -50,9 +50,6 @@ processed_data/
 # Output Reports (can be regenerated)
 output/reports/
 
-# Bob Sessions (may contain sensitive data)
-bob_sessions/
-
 # Node modules (for dashboard)
 dashboard/node_modules/
 dashboard/dist/
