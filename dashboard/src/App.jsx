@@ -10,6 +10,8 @@ export default function App() {
   const [datasets, setDatasets] = useState([]);
   const [selectedDataset, setSelectedDataset] = useState(null);
   const [data, setData] = useState([]);
+  const [originalData, setOriginalData] = useState([]);
+  const [originalColumns, setOriginalColumns] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [columns, setColumns] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -48,8 +50,10 @@ export default function App() {
       
       const result = await response.json();
       setData(result.data || []);
+      setOriginalData(result.data || []);
       setFilteredData(result.data || []);
       setColumns(result.columns || []);
+      setOriginalColumns(result.columns || []);
       setStats(result.stats || null);
       setSelectedDataset(datasetPath);
     } catch (err) {
@@ -73,14 +77,18 @@ export default function App() {
     }));
 
     setData(mockData);
+    setOriginalData(mockData);
     setFilteredData(mockData);
     setColumns(['id', 'name', 'category', 'value', 'date', 'status']);
+    setOriginalColumns(['id', 'name', 'category', 'value', 'date', 'status']);
     setSelectedDataset('mock-data');
   };
 
   const handleFilterChange = (filters) => {
     if (Object.keys(filters).length === 0) {
-      setFilteredData(data);
+      setData(originalData);
+      setFilteredData(originalData);
+      setColumns(originalColumns);
       return;
     }
 
