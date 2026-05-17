@@ -26,7 +26,7 @@ def main():
     )
     parser.add_argument(
         "--dataset-name",
-        default="layoffs",
+        default=None,
         help="Name of the dataset"
     )
     parser.add_argument(
@@ -41,6 +41,8 @@ def main():
     )
     
     args = parser.parse_args()
+    if not args.dataset_name:
+        args.dataset_name = Path(args.data_path).stem
     
     logger.info("=" * 80)
     logger.info("FastReports - Automated Data Analysis Pipeline")
